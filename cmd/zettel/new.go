@@ -21,7 +21,7 @@ func (hub *Hub) NewPost(config Config) cli.Command {
 		Name:      "new",
 		Aliases:   []string{"n"},
 		Usage:     "Create a new post.",
-		Action:    hub.newPost,
+		Action:    hub.MustHaveConfig(hub.newPost),
 		ArgsUsage: "[TITLE]",
 		Before: func(c *cli.Context) error {
 			if c.Args().First() == "" {
