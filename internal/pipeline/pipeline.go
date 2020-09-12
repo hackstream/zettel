@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/yourbasic/graph"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
@@ -127,4 +128,27 @@ func convertMarkdownToHTML(posts []Post) error {
 	}
 
 	return nil
+}
+
+func makeGraph(posts []Post) (*graph.Mutable, error) {
+	// Make a map of all posts with their index
+	// so that it would be easy to lookup the index using the slug
+	slugs := make(map[string]int)
+	for i, p := range posts {
+		pth := path.Base(p.FilePath)
+		slug := strings.TrimRight(pth, ".md")
+		slugs[slug] = i
+	}
+
+	g := graph.New(len(posts))
+
+	for i, p := range posts {
+		for _, link := range p.Links {
+			linkIndex := slugs[link.Slug]
+
+			g.AddBoth(i, linkIndex)
+		}
+	}
+
+	return g, nil
 }
