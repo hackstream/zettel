@@ -1,6 +1,8 @@
 package pipeline
 
-import "time"
+import (
+	"time"
+)
 
 // Metadata contains the metadata extracted from the frontmatter of the post.
 type Metadata struct {
@@ -24,4 +26,13 @@ type Post struct {
 	// These are not all the links to/from this post, since we need
 	// to derive those from the graph.
 	Links []Link
+}
+
+// NewPost returns a new Post
+func NewPost(path string) Post {
+	return Post{
+		FilePath: path,
+		Links:    make([]Link, 0),
+		Meta:     Metadata{},
+	}
 }

@@ -27,10 +27,7 @@ func readFiles(directory string) ([]Post, error) {
 			return nil
 		}
 
-		post := Post{
-			FilePath: path,
-			Meta:     Metadata{},
-		}
+		post := NewPost(path)
 
 		// Read the file
 		data, err := ioutil.ReadFile(path)
@@ -90,6 +87,11 @@ func replaceLinks(posts []Post) error {
 
 			// Replace the slug with a link
 			posts[i].Body = strings.ReplaceAll(p.Body, m, link)
+			l := Link{
+				Slug:  sg,
+				Title: meta.Title,
+			}
+			posts[i].Links = append(posts[i].Links, l)
 		}
 	}
 
