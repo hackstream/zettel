@@ -1,6 +1,6 @@
 .PHONY : build run fresh test clean pack-releases
 
-BIN := zettel
+BIN := zettel.bin
 
 HASH := $(shell git rev-parse --short HEAD)
 COMMIT_DATE := $(shell git show -s --format=%ci ${HASH})
