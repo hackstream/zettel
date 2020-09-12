@@ -1,0 +1,23 @@
+{{ define "list" }}
+<!doctype html>
+<html>
+    {{- template "header" . }}
+   <body>
+      <div id="page-container">
+         <div id="content-wrap">
+         {{- template "navbar" . }}
+        <section class="hero container">
+            <h2>All Zettels</h2>
+        </section>
+        <section class="container link">
+            <ul>
+            {{- range .Posts}}
+                <li><a href="/posts/{{.Slug}}.html">{{.Title}}</a></li>
+            {{- end}}
+            </ul>
+        </section>
+         </div>
+         {{- template "footer" . }}
+      </div>
+   </body>
+</html>
