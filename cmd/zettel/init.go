@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 
 	"github.com/pelletier/go-toml"
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 )
 
 var (
@@ -16,8 +16,8 @@ var (
 )
 
 // InitProject initializes a new zettel site copies a sample config.
-func (hub *Hub) InitProject(config Config) cli.Command {
-	return cli.Command{
+func (hub *Hub) InitProject(config Config) *cli.Command {
+	return &cli.Command{
 		Name:      "init",
 		Aliases:   []string{"i"},
 		Usage:     "Initializes a new zettel site with default config.",

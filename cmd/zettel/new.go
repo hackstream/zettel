@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 )
 
 var (
@@ -16,8 +16,8 @@ var (
 )
 
 // NewPost initializes git repo and copies a sample config
-func (hub *Hub) NewPost(config Config) cli.Command {
-	return cli.Command{
+func (hub *Hub) NewPost(config Config) *cli.Command {
+	return &cli.Command{
 		Name:      "new",
 		Aliases:   []string{"n"},
 		Usage:     "Create a new post.",

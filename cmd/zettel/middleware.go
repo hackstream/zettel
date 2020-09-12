@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 )
 
 // MustHaveConfig acts like a middleware to load config

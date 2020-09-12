@@ -6,7 +6,7 @@ import (
 
 	"github.com/knadh/stuffbin"
 	"github.com/sirupsen/logrus"
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 )
 
 var (
@@ -52,10 +52,14 @@ func main() {
 	app.Name = "zettel"
 	app.Usage = "Zettel builds a digital Zettelkasten website for your notes in Markdown."
 	app.Version = buildVersion
-	app.Author = "Hackstream Devs @hackstream"
+	app.Authors = []*cli.Author{
+		&cli.Author{
+			Name: "Hackstream Devs",
+		},
+	}
 	// Register command line args.
 	app.Flags = []cli.Flag{
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "verbose",
 			Usage: "Enable verbose logging",
 		},
@@ -73,7 +77,7 @@ func main() {
 	hub := NewHub(logger, fs, buildVersion)
 
 	// Register commands.
-	app.Commands = []cli.Command{
+	app.Commands = []*cli.Command{
 		hub.InitProject(hub.Config),
 		hub.NewPost(hub.Config),
 	}
