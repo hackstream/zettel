@@ -1,0 +1,20 @@
+{{ define "base" }}
+<!doctype html>
+<html>
+    {{- template "header" . }}
+   <body>
+      <div id="page-container">
+         <div id="content-wrap">
+         {{- template "navbar" . }}
+            {{- if .IsIndex}}
+            <section class="hero container">
+               <h2>{{.SiteName}}</h2>
+               <h5>{{.Description}}</h5>
+            </section>
+            {{- end}}
+            {{- template "post" . }}
+         </div>
+         {{- template "footer" . }}
+      </div>
+   </body>
+</html>
