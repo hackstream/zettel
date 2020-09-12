@@ -10,6 +10,10 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/extension"
+	"github.com/yuin/goldmark/parser"
+	"github.com/yuin/goldmark/renderer/html"
 	"gopkg.in/yaml.v3"
 )
 
@@ -83,7 +87,7 @@ func replaceLinks(posts []Post) error {
 				return fmt.Errorf("link to an invalid slug: %s", sg)
 			}
 
-			link := fmt.Sprintf(`<a href="/posts/%s.html">%s</a>`, sg, meta.Title)
+			link := fmt.Sprintf(`[%s](/posts/%s.html)`, meta.Title, sg)
 
 			// Replace the slug with a link
 			posts[i].Body = strings.ReplaceAll(p.Body, m, link)
@@ -93,6 +97,33 @@ func replaceLinks(posts []Post) error {
 			}
 			posts[i].Links = append(posts[i].Links, l)
 		}
+	}
+
+	return nil
+}
+
+// convertMarkdownToHTML converts post's body into HTML
+func convertMarkdownToHTML(posts []Post) error {
+	md := goldmark.New(
+		goldmark.WithExtensions(extension.GFM),
+		goldmark.WithParserOptions(
+			parser.WithAutoHeadingID(),
+		),
+		goldmark.WithRendererOptions(
+			html.WithHardWraps(),
+			html.WithXHTML(),
+		),
+	)
+
+	for i, p := range posts {
+		html := bytes.NewBuffer([]byte{})
+
+		err := md.Convert([]byte(p.Body), html)
+		if err != nil {
+			return err
+		}
+
+		posts[i].Body = string(html.Bytes())
 	}
 
 	return nil

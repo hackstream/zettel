@@ -44,3 +44,24 @@ func TestReplaceLinks(t *testing.T) {
 
 	t.Logf("posts: %#v", posts)
 }
+
+func TestConvertMarkdownToHTML(t *testing.T) {
+	dir := os.Getenv("TEST_DIR")
+
+	posts, err := readFiles(dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = replaceLinks(posts)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = convertMarkdownToHTML(posts)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Logf("posts: %#v", posts)
+}
