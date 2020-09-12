@@ -67,7 +67,7 @@ func (hub *Hub) newPost(cliCtx *cli.Context) error {
 		return err
 	}
 	// render post template
-	err = saveResource([]string{"templates/post.tmpl"}, post, cfg, hub.Fs)
+	err = saveResource("index", []string{"templates/post.tmpl"}, post, cfg, hub.Fs)
 	if err != nil {
 		return err
 	}

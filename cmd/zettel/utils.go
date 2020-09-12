@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"html/template"
 	"io"
 	"os"
+	"text/template"
 
 	"github.com/knadh/stuffbin"
 )
@@ -24,8 +24,8 @@ func createFile(cfgFile []byte, configName string) error {
 
 // parse takes in a template path and the variables to be "applied" on it. The rendered template
 // is saved to the destination path.
-func parse(templateNames []string, fs stuffbin.FileSystem) (*template.Template, error) {
-	tmpl := template.New("")
+func parse(name string, templateNames []string, fs stuffbin.FileSystem) (*template.Template, error) {
+	tmpl := template.New(name)
 	for _, t := range templateNames {
 		// read template file
 		c, err := fs.Read(t)
@@ -49,17 +49,25 @@ func writeTemplate(tmpl *template.Template, config map[string]interface{}, dest 
 	return nil
 }
 
-func saveResource(templateNames []string, dest io.Writer, config map[string]interface{}, fs stuffbin.FileSystem) error {
+func saveResource(name string, templateNames []string, dest io.Writer, config map[string]interface{}, fs stuffbin.FileSystem) error {
 	// parse template file
-	tmpl, err := parse(templateNames, fs)
+	tmpl, err := parse(name, templateNames, fs)
 	if err != nil {
 		return err
 	}
-	fmt.Println(tmpl)
 	err = writeTemplate(tmpl, config, dest)
 	if err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func createDirectory(dir string) error {
+	_, err := os.Stat(dir)
+	if os.IsNotExist(err) {
+		os.Mkdir(dir, 0755)
+		return nil
+	}
+	return err
 }

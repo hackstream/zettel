@@ -13,7 +13,7 @@ func (hub *Hub) BuildSite() *cli.Command {
 		Name:    "build",
 		Aliases: []string{"b"},
 		Usage:   "Builds a static dist of all notes ready to be published on web.",
-		Action:  hub.build,
+		Action:  hub.MustHaveConfig(hub.build),
 	}
 }
 
@@ -31,6 +31,10 @@ func (hub *Hub) build(cliCtx *cli.Context) error {
 		return err
 	}
 	_, err = pipeline.MakeGraph(posts)
+	if err != nil {
+		return err
+	}
+	err = hub.makeDist()
 	if err != nil {
 		return err
 	}
