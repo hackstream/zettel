@@ -60,8 +60,6 @@ func main() {
 			Name:  "verbose",
 			Usage: "Enable verbose logging",
 		},
-		cli.StringSliceFlag{
-			Name: "config, c", Value: &cli.StringSlice{}, Usage: "path to one or more config files", TakesFile: true},
 	}
 	var (
 		logger = initLogger(true)
@@ -83,6 +81,6 @@ func main() {
 	hub.Logger.Info("Starting kubekutr...")
 	err = app.Run(os.Args)
 	if err != nil {
-		logger.Errorf("Something terrbily went wrong: %s", err)
+		logger.Errorf("OOPS: %s", err)
 	}
 }
