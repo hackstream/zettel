@@ -67,7 +67,7 @@ func main() {
 	// required static assets (.css, .js files etc.) are loaded.
 	fs, err := initFileSystem(os.Args[0])
 	if err != nil {
-		logger.Errorf("error reading stuffed binary: %v", err)
+		logger.Errorf("error reading stuffed binary: %s", err)
 	}
 	// Initialize hub.
 	hub := NewHub(logger, fs, buildVersion)

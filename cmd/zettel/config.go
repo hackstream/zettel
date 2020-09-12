@@ -1,18 +1,9 @@
 package main
 
-import (
-	"github.com/pelletier/go-toml"
-)
-
-func gatherDefaultConfig() ([]byte, error) {
-	cfg := []byte(`
-SiteName = "demo"
-Title = "Hello World"`)
-
-	config := Config{}
-	err := toml.Unmarshal(cfg, &config)
-	if err != nil {
-		return nil, err
+func gatherDefaultConfig() (Config, error) {
+	config := Config{
+		SiteName: "demo",
+		Title:    "Hello World",
 	}
-	return cfg, nil
+	return config, nil
 }

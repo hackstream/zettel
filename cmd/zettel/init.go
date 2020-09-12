@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/pelletier/go-toml"
 	"github.com/urfave/cli"
 )
 
@@ -39,9 +40,13 @@ func (hub *Hub) init(cliCtx *cli.Context) error {
 	if err != nil {
 		return err
 	}
-	configFile, err := gatherDefaultConfig()
+	cfg, err := gatherDefaultConfig()
 	if err != nil {
 		return fmt.Errorf("error creating default config file template: %v", err)
+	}
+	configFile, err := toml.Marshal(cfg)
+	if err != nil {
+		return fmt.Errorf("error unmarshalling config: %s", err)
 	}
 	// persist the default config file.
 	err = createFile(configFile, filepath.Join(siteDir, defaultconfigName))

@@ -4,8 +4,8 @@ import "time"
 
 // Config represents zettel site specific settings.
 type Config struct {
-	SiteName string
-	Title    string
+	SiteName string `toml:"site_name"`
+	Title    string `toml:"title"`
 }
 
 type Post struct {
