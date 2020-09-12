@@ -9,7 +9,7 @@ import (
 func TestReadFiles(t *testing.T) {
 	dir := os.Getenv("TEST_DIR")
 
-	posts, err := readFiles(dir)
+	posts, err := ReadFiles(dir)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -32,12 +32,12 @@ func TestFindLinks(t *testing.T) {
 func TestReplaceLinks(t *testing.T) {
 	dir := os.Getenv("TEST_DIR")
 
-	posts, err := readFiles(dir)
+	posts, err := ReadFiles(dir)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	err = replaceLinks(posts)
+	err = ReplaceLinks(posts)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -48,17 +48,17 @@ func TestReplaceLinks(t *testing.T) {
 func TestConvertMarkdownToHTML(t *testing.T) {
 	dir := os.Getenv("TEST_DIR")
 
-	posts, err := readFiles(dir)
+	posts, err := ReadFiles(dir)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	err = replaceLinks(posts)
+	err = ReplaceLinks(posts)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	err = convertMarkdownToHTML(posts)
+	err = ConvertMarkdownToHTML(posts)
 	if err != nil {
 		t.Fatal(err)
 	}

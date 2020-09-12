@@ -36,7 +36,7 @@ func (hub *Hub) newPost(cliCtx *cli.Context) error {
 	title := cliCtx.Args().First()
 	// fill basic metadata
 	var cfg = map[string]interface{}{
-		"Date":  time.Now().Format("2006-01-02T15:04:05"),
+		"Date":  time.Now().Format(time.RFC3339),
 		"Title": title,
 	}
 	// clean up title
@@ -67,7 +67,7 @@ func (hub *Hub) newPost(cliCtx *cli.Context) error {
 		return err
 	}
 	// render post template
-	err = saveResource("templates/post.tmpl", post, cfg, hub.Fs)
+	err = saveResource([]string{"templates/post.tmpl"}, post, cfg, hub.Fs)
 	if err != nil {
 		return err
 	}

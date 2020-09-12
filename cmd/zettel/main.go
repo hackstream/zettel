@@ -80,6 +80,7 @@ func main() {
 	app.Commands = []*cli.Command{
 		hub.InitProject(hub.Config),
 		hub.NewPost(hub.Config),
+		hub.BuildSite(),
 	}
 	// Run the app.
 	hub.Logger.Info("Starting zettel...")

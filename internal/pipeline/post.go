@@ -25,7 +25,8 @@ type Post struct {
 	// Links here only contains the links mentioned in the body.
 	// These are not all the links to/from this post, since we need
 	// to derive those from the graph.
-	Links []Link
+	Links       []Link
+	Connections []Link
 }
 
 // NewPost returns a new Post

@@ -18,8 +18,8 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// readFiles reads the given directory and appends into given posts
-func readFiles(directory string) ([]Post, error) {
+// ReadFiles reads the given directory and appends into given posts
+func ReadFiles(directory string) ([]Post, error) {
 	posts := []Post{}
 	err := filepath.Walk(directory, func(path string, info os.FileInfo, err error) error {
 		// log.Printf("calling for %s, %v, %v", path, info, err)
@@ -62,8 +62,8 @@ func readFiles(directory string) ([]Post, error) {
 	return posts, nil
 }
 
-// replaceLinks replaces all the `[[]]` links in the body with the link to the HTML page.
-func replaceLinks(posts []Post) error {
+// ReplaceLinks replaces all the `[[]]` links in the body with the link to the HTML page.
+func ReplaceLinks(posts []Post) error {
 	// First we need a map of all the files, so that we know
 	// if there's a link to any non existent file and also
 	// to get the metadata of the file
@@ -103,8 +103,8 @@ func replaceLinks(posts []Post) error {
 	return nil
 }
 
-// convertMarkdownToHTML converts post's body into HTML
-func convertMarkdownToHTML(posts []Post) error {
+// ConvertMarkdownToHTML converts post's body into HTML
+func ConvertMarkdownToHTML(posts []Post) error {
 	md := goldmark.New(
 		goldmark.WithExtensions(extension.GFM),
 		goldmark.WithParserOptions(
@@ -130,7 +130,8 @@ func convertMarkdownToHTML(posts []Post) error {
 	return nil
 }
 
-func makeGraph(posts []Post) (*graph.Mutable, error) {
+// MakeGraph returns a graph for a given list of `Posts`.
+func MakeGraph(posts []Post) (*graph.Mutable, error) {
 	// Make a map of all posts with their index
 	// so that it would be easy to lookup the index using the slug
 	slugs := make(map[string]int)

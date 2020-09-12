@@ -1,29 +1,30 @@
 {{ define "post" }}
 
 <section class="meta container">
-    <h2>{{.Title}}</h2>
-    <p>Last updated at — {{.Date}}</p>
+    <h2>{{.Post.Meta.Title}}</h2>
+    <p>Last updated at — {{.Post.Meta.Date}}</p>
 </section>
 
 <section class="container">
-    {{.Body}}
+    {{.Post.Body}}
 </section>
 
-{{- if .Connections}}
+{{- if .Post.Connections}}
     <section class="container link">
         <h3>Connections</h3>
             <ul>
-                {{- range .Connections}}
+                {{- range .Post.Connections}}
                 <li><a href="/posts/{{.Slug}}.html">{{.Title}}</a></li>
                 {{- end}}
             </ul>
     </section>
 {{- end}}
 
-{{- if .Tags}}
+{{- if .Post.Meta.Tags}}
     <section class="container tags">
-        {{- range .Tags}}
-            <button class='outline'>Tag-1</button>
+        {{- range $t := .Post.Meta.Tags}}
+            <button class='outline'>{{$t}}</button>
         {{- end}}
     </section>
 {{- end}}
+{{- end }}

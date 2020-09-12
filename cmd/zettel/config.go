@@ -25,8 +25,8 @@ func initConfig(c *cli.Context) (Config, error) {
 
 func gatherDefaultConfig() (Config, error) {
 	config := Config{
-		SiteName: "demo",
-		Title:    "Hello World",
+		SiteName:    "My Zettel",
+		Description: "Hello World. This is my zettel notebook",
 	}
 	return config, nil
 }
