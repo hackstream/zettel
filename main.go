@@ -76,9 +76,10 @@ func main() {
 	// Register commands.
 	app.Commands = []cli.Command{
 		hub.InitProject(hub.Config),
+		hub.NewPost(hub.Config),
 	}
 	// Run the app.
-	hub.Logger.Info("Starting kubekutr...")
+	hub.Logger.Info("Starting zettel...")
 	err = app.Run(os.Args)
 	if err != nil {
 		logger.Errorf("OOPS: %s", err)

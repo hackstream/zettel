@@ -14,17 +14,17 @@ var (
 	defaultindexFileName = "index.md"
 )
 
-// InitProject initializes git repo and copies a sample config
+// InitProject initializes a new zettel site copies a sample config.
 func (hub *Hub) InitProject(config Config) cli.Command {
 	return cli.Command{
 		Name:      "init",
 		Aliases:   []string{"i"},
-		Usage:     "Initializes an empty git repo with a kubekutr config file.",
+		Usage:     "Initializes a new zettel site with default config.",
 		Action:    hub.init,
 		ArgsUsage: "[SITENAME]",
 		Before: func(c *cli.Context) error {
 			if c.Args().First() == "" {
-				return errors.New("Site name is missing.")
+				return errors.New("Site name is missing")
 			}
 			return nil
 		},
