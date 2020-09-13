@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"path"
 	"strings"
 
@@ -16,6 +17,53 @@ func (hub *Hub) BuildSite() *cli.Command {
 		Usage:   "Builds a static dist of all notes ready to be published on web.",
 		Action:  hub.MustHaveConfig(hub.build),
 	}
+}
+
+func (hub *Hub) makeDist() error {
+	dirs := []string{
+		defaultDistDir,
+		path.Join(defaultDistDir, "css"),
+		path.Join(defaultDistDir, "images"),
+		path.Join(defaultDistDir, "posts"),
+		path.Join(defaultDistDir, "tags"),
+	}
+
+	for _, d := range dirs {
+		err := createDirectory(d)
+		if err != nil {
+			return err
+		}
+	}
+
+	// Copy css, images folders to dist directory
+	globs := map[string]string{
+		"/templates/layouts/css/*":    path.Join(defaultDistDir, "css"),
+		"/templates/layouts/images/*": path.Join(defaultDistDir, "images"),
+	}
+
+	for g, dir := range globs {
+		files, err := hub.Fs.Glob(g)
+		if err != nil {
+			return err
+		}
+		for _, f := range files {
+			b, err := hub.Fs.Read(f)
+			if err != nil {
+				return err
+			}
+
+			fd, err := os.Create(path.Join(dir, path.Base(f)))
+			if err != nil {
+				return err
+			}
+
+			_, err = fd.Write(b)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }
 
 func (hub *Hub) build(cliCtx *cli.Context) error {
@@ -39,8 +87,21 @@ func (hub *Hub) build(cliCtx *cli.Context) error {
 	if err != nil {
 		return err
 	}
+
+	// Aggregate all tags
+	tags := make(map[string][]pipeline.Post, 0)
+
 	for i := 0; i < len(posts); i++ {
 		p := posts[i]
+		// Put this post in the appropriate tags
+		for _, t := range p.Meta.Tags {
+			ps, ok := tags[t]
+			if !ok {
+				tags[t] = []pipeline.Post{p}
+				continue
+			}
+			ps = append(ps, p)
+		}
 		// If index, call render index
 		if path.Base(p.FilePath) == defaultindexFileName {
 			err := hub.renderIndex(p)
@@ -84,5 +145,20 @@ func (hub *Hub) build(cliCtx *cli.Context) error {
 			return err
 		}
 	}
+
+	// Render tags
+	for tag, ps := range tags {
+		err := hub.renderTag(tag, ps, false)
+		if err != nil {
+			return err
+		}
+	}
+
+	// Render all posts file
+	err = hub.renderTag("All Posts", posts, true)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

@@ -28,7 +28,7 @@
 {{- if .Post.Meta.Tags}}
     <section class="container tags">
         {{- range $t := .Post.Meta.Tags}}
-            <button class='outline'>{{$t}}</button>
+            <a href="/tags/{{$t}}.html"><button class='outline'>{{$t}}</button></a>
         {{- end}}
     </section>
 {{- end}}

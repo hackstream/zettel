@@ -7,12 +7,16 @@
          <div id="content-wrap">
          {{- template "navbar" . }}
         <section class="hero container">
-            <h2>All Zettels</h2>
+            <h2>{{ .TagName }}</h2>
         </section>
         <section class="container link">
             <ul>
-            {{- range .Posts}}
-                <li><a href="/posts/{{.Slug}}.html">{{.Title}}</a></li>
+            {{- range .Links}}
+                {{- if eq .Slug "index"}}
+                    <li><a href="/">{{.Title}}</a></li>
+                {{- else}}
+                    <li><a href="/posts/{{.Slug}}.html">{{.Title}}</a></li>
+                {{- end}} 
             {{- end}}
             </ul>
         </section>
