@@ -5,10 +5,7 @@
     <img src="./docs/cover.png" alt="Logo">
   </a>
 
-  <h3 align="center">zettel</h3>
-
   <p align="center">
-    _📋 Organize your life!_
     <br />
     <a href="https://zettel.hackstream.dev/"><strong>Explore the docs »</strong></a>
     <br />
