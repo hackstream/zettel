@@ -91,7 +91,7 @@ func ReplaceLinks(posts []Post) error {
 			link := fmt.Sprintf(`[%s](/posts/%s.html)`, meta.Title, sg)
 
 			// Replace the slug with a link
-			posts[i].Body = strings.ReplaceAll(p.Body, m, link)
+			posts[i].Body = strings.ReplaceAll(posts[i].Body, m, link)
 			l := Link{
 				Slug:  sg,
 				Title: meta.Title,
