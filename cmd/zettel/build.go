@@ -2,6 +2,7 @@ package main
 
 import (
 	"path"
+	"strings"
 
 	"github.com/hackstream/zettel/internal/pipeline"
 	"github.com/urfave/cli/v2"
@@ -30,7 +31,7 @@ func (hub *Hub) build(cliCtx *cli.Context) error {
 	if err != nil {
 		return err
 	}
-	_, err = pipeline.MakeGraph(posts)
+	g, err := pipeline.MakeGraph(posts)
 	if err != nil {
 		return err
 	}
@@ -38,12 +39,49 @@ func (hub *Hub) build(cliCtx *cli.Context) error {
 	if err != nil {
 		return err
 	}
-	for _, p := range posts {
+	for i := 0; i < len(posts); i++ {
+		p := posts[i]
+		// If index, call render index
 		if path.Base(p.FilePath) == defaultindexFileName {
 			err := hub.renderIndex(p)
 			if err != nil {
 				return err
 			}
+			continue
+		}
+
+		// Get connection indices from the graph
+		conns := []pipeline.Link{}
+		do := func(n int, c int64) bool {
+			// Check if this post is one of the links mentioned in the body of the post.
+			// If it is, we will skip, since we only need connections from other post to this.
+			co := posts[n]
+			isInnerLink := false
+			s := strings.TrimRight(path.Base(co.FilePath), ".md")
+			for _, l := range p.Links {
+				if l.Slug == s {
+					isInnerLink = true
+					break
+				}
+			}
+			coLink := pipeline.Link{
+				Title: co.Meta.Title,
+				Slug:  s,
+			}
+			if !isInnerLink {
+				conns = append(conns, coLink)
+			}
+			return false
+		}
+
+		// Get connections to the post
+		g.Visit(i, do)
+
+		p.Connections = conns
+
+		err := hub.renderPost(p)
+		if err != nil {
+			return err
 		}
 	}
 	return nil

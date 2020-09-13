@@ -15,7 +15,11 @@
         <h3>Connections</h3>
             <ul>
                 {{- range .Post.Connections}}
-                <li><a href="/posts/{{.Slug}}.html">{{.Title}}</a></li>
+                    {{- if eq .Slug "index"}}
+                        <li><a href="/">{{.Title}}</a></li>
+                    {{- else}}
+                        <li><a href="/posts/{{.Slug}}.html">{{.Title}}</a></li>
+                    {{- end}}    
                 {{- end}}
             </ul>
     </section>

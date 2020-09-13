@@ -53,7 +53,7 @@ func main() {
 	app.Usage = "Zettel builds a digital Zettelkasten website for your notes in Markdown."
 	app.Version = buildVersion
 	app.Authors = []*cli.Author{
-		&cli.Author{
+		{
 			Name: "Hackstream Devs",
 		},
 	}
