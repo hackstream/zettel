@@ -124,4 +124,4 @@ For a list of things to improve visit [TODO.md](TODO.md)
 
 ## License
 
-[MIT](license)
+[GPL v3](license)
