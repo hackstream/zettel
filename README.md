@@ -33,7 +33,7 @@ This is as meta as it gets. [Visit](https://zettel.hackstream.dev) `zettel`'s of
 
 ## Acknowledgements
 
-These amazing FOSS projects helped us build `zettel`. If you liked this project, consider spreading some love to these projects as well! :purple_heart:
+These amazing FOSS projects helped us build `zettel`. If you liked `zettel`, consider spreading some love to these projects as well! :purple_heart:
 
 - [urfave/cli](https://github.com/urfave/cli)
 - [knadh/stuffbin](https://github.com/knadh/stuffbin)
