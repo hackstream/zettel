@@ -7,7 +7,7 @@ import (
 
 var (
 	// LinkRegex is the regex of links in posts
-	LinkRegex = regexp.MustCompile(`(^|\s)(\[\[.+\]\])(\s|$)`)
+	LinkRegex = regexp.MustCompile(`(^|\s)(\[\[(\w|-)+\]\])(\s|$)`)
 )
 
 func findLinks(body string) []string {
