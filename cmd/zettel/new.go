@@ -10,11 +10,6 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-var (
-	maxTitleLength = 20
-	defaultPostDir = "content"
-)
-
 // NewPost initializes git repo and copies a sample config
 func (hub *Hub) NewPost(config Config) *cli.Command {
 	return &cli.Command{
@@ -36,7 +31,7 @@ func (hub *Hub) newPost(cliCtx *cli.Context) error {
 	title := cliCtx.Args().First()
 	// fill basic metadata
 	var cfg = map[string]interface{}{
-		"Date":  time.Now().Format("2006-01-02T15:04:05"),
+		"Date":  time.Now().Format(time.RFC3339),
 		"Title": title,
 	}
 	// clean up title
@@ -52,22 +47,13 @@ func (hub *Hub) newPost(cliCtx *cli.Context) error {
 	if err != nil {
 		return err
 	}
-	contentDir := filepath.Join(currentDir, defaultPostDir)
-	// create content dir if it doesn't exit
-	if _, err := os.Stat(contentDir); os.IsNotExist(err) {
-		os.Mkdir(contentDir, 0755)
-	}
-	if err != nil {
-		return err
-	}
-	// persist Post file.
-	path := filepath.Join(contentDir, sanitizedTitle)
+	path := filepath.Join(currentDir, defaultPostDir, sanitizedTitle)
 	post, err := os.Create(path)
 	if err != nil {
 		return err
 	}
 	// render post template
-	err = saveResource("templates/post.tmpl", post, cfg, hub.Fs)
+	err = saveResource("index", []string{"templates/post.tmpl"}, post, cfg, hub.Fs)
 	if err != nil {
 		return err
 	}

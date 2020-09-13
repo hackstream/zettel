@@ -53,7 +53,7 @@ func main() {
 	app.Usage = "Zettel builds a digital Zettelkasten website for your notes in Markdown."
 	app.Version = buildVersion
 	app.Authors = []*cli.Author{
-		&cli.Author{
+		{
 			Name: "Hackstream Devs",
 		},
 	}
@@ -80,6 +80,7 @@ func main() {
 	app.Commands = []*cli.Command{
 		hub.InitProject(hub.Config),
 		hub.NewPost(hub.Config),
+		hub.BuildSite(),
 	}
 	// Run the app.
 	hub.Logger.Info("Starting zettel...")

@@ -8,7 +8,7 @@
          {{- template "navbar" . }}
             {{- if .IsIndex}}
             <section class="hero container">
-               <h2>{{.SiteName}}</h2>
+               <h1>{{.SiteName}}</h1>
                <h5>{{.Description}}</h5>
             </section>
             {{- end}}
@@ -18,3 +18,4 @@
       </div>
    </body>
 </html>
+{{- end }}
