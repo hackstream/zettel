@@ -10,10 +10,6 @@ import (
 	"github.com/hackstream/zettel/internal/pipeline"
 )
 
-const (
-	defaultDistDir = "dist"
-)
-
 func (hub *Hub) makeDist() error {
 	dirs := []string{
 		defaultDistDir,

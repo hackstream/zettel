@@ -10,11 +10,6 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-var (
-	maxTitleLength = 20
-	defaultPostDir = "content"
-)
-
 // NewPost initializes git repo and copies a sample config
 func (hub *Hub) NewPost(config Config) *cli.Command {
 	return &cli.Command{
@@ -52,16 +47,7 @@ func (hub *Hub) newPost(cliCtx *cli.Context) error {
 	if err != nil {
 		return err
 	}
-	contentDir := filepath.Join(currentDir, defaultPostDir)
-	// create content dir if it doesn't exit
-	if _, err := os.Stat(contentDir); os.IsNotExist(err) {
-		os.Mkdir(contentDir, 0755)
-	}
-	if err != nil {
-		return err
-	}
-	// persist Post file.
-	path := filepath.Join(contentDir, sanitizedTitle)
+	path := filepath.Join(currentDir, defaultPostDir, sanitizedTitle)
 	post, err := os.Create(path)
 	if err != nil {
 		return err
