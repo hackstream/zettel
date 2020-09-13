@@ -1,5 +1,23 @@
-# zettel
-_📋 Organize your life!_
+<!-- PROJECT LOGO -->
+<br />
+<p align="center">
+  <a href="https://github.com/hackstream/zettel">
+    <img src="./docs/cover.png" alt="Logo">
+  </a>
+
+  <h3 align="center">zettel</h3>
+
+  <p align="center">
+    _📋 Organize your life!_
+    <br />
+    <a href="https://zettel.hackstream.dev/"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/hackstream/zettel/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/hackstream/zettel/issues">Request Feature</a>
+  </p>
+</p>
 
 
 `zettel` is a simple FOSS tool to jot down notes using Zettelkasten methodology. The core aim of `zettel` is to store notes _for life_. The notes are in simple `markdown` format which can be published as a static website.
