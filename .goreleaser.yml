@@ -1,0 +1,24 @@
+env:
+  - CGO_ENABLED=0
+  - RELEASE_BUILDS=dist/zettel_darwin_amd64/zettel dist/zettel_linux_amd64/zettel dist/zettel_windows_amd64/zettel.exe dist/zettel_linux_arm64/zettel 
+builds:
+  - binary: zettel
+    goos:
+      - windows
+      - darwin
+      - linux
+    goarch:
+      - amd64
+      - arm64
+    dir: cmd/zettel
+    ldflags:
+      - -s -w -X "main.buildVersion={{ .Tag }} ({{ .ShortCommit }} {{ .Date }})"
+    hooks:
+      # stuff executables with static assets.
+      post: make pack-releases
+
+archives:
+  - format: tar.gz
+    files:
+      - README.md
+      - LICENSE
