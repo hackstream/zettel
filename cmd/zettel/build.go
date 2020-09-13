@@ -20,6 +20,12 @@ func (hub *Hub) BuildSite() *cli.Command {
 }
 
 func (hub *Hub) makeDist() error {
+	// Clear dist directory
+	err := os.RemoveAll(defaultDistDir)
+	if err != nil {
+		return err
+	}
+
 	dirs := []string{
 		defaultDistDir,
 		path.Join(defaultDistDir, "css"),
