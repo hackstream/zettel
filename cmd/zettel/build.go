@@ -162,5 +162,12 @@ func (hub *Hub) build(cliCtx *cli.Context) error {
 		return err
 	}
 
+	// Render graph.json
+	gd := MakeGraphData(posts, g)
+	err = hub.renderGraphData(gd)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

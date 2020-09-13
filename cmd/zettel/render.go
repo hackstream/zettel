@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"path"
@@ -96,6 +97,41 @@ func (hub *Hub) renderTag(tag string, posts []pipeline.Post, isAllPosts bool) er
 		"templates/layouts/footer.tmpl",
 	}
 	err = saveResource("list", tmpls, file, tmplContext, hub.Fs)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (hub *Hub) renderGraphData(graphData GraphData) error {
+	path := filepath.Join(defaultDistDir, "data", "graph.json")
+	file, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	err = json.NewEncoder(file).Encode(&graphData)
+	if err != nil {
+		return err
+	}
+
+	path = filepath.Join(defaultDistDir, "graph.html")
+	file, err = os.Create(path)
+	if err != nil {
+		return err
+	}
+	// render post template
+	tmpls := []string{
+		"templates/layouts/graph.tmpl",
+		"templates/layouts/header.tmpl",
+		"templates/layouts/navbar.tmpl",
+		"templates/layouts/footer.tmpl",
+	}
+
+	tmplContext := make(map[string]interface{})
+	tmplContext["SiteName"] = hub.Config.SiteName
+	tmplContext["Description"] = hub.Config.Description
+
+	err = saveResource("graph", tmpls, file, tmplContext, hub.Fs)
 	if err != nil {
 		return err
 	}

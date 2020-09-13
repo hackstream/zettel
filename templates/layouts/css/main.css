@@ -64,7 +64,7 @@ footer {
 } */
 
 #graphContainer {
-    max-width: 400px;
-    height: 400px;
+    max-width: 960px;
+    height: 100vh;
     margin: auto;
-  }
+}
