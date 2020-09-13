@@ -1,12 +1,19 @@
 package pipeline
 
-import "regexp"
+import (
+	"regexp"
+	"strings"
+)
 
 var (
 	// LinkRegex is the regex of links in posts
-	LinkRegex = regexp.MustCompile(`\[\[.+\]\]`)
+	LinkRegex = regexp.MustCompile(`(^|\s)(\[\[.+\]\])(\s|$)`)
 )
 
 func findLinks(body string) []string {
-	return LinkRegex.FindAllString(body, -1)
+	matches := LinkRegex.FindAllString(body, -1)
+	for i, m := range matches {
+		matches[i] = strings.TrimSpace(m)
+	}
+	return matches
 }
