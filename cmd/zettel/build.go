@@ -162,8 +162,16 @@ func (hub *Hub) build(cliCtx *cli.Context) error {
 		}
 	}
 
-	// Render all posts file
-	err = hub.renderTag("All Posts", posts, true)
+	// Render all posts file and remove index
+	postsWithoutIndex := make([]pipeline.Post, 0, len(posts)-1)
+	for _, p := range posts {
+		if path.Base(p.FilePath) == defaultindexFileName {
+			continue
+		}
+		postsWithoutIndex = append(postsWithoutIndex, p)
+	}
+
+	err = hub.renderTag("All Posts", postsWithoutIndex, true)
 	if err != nil {
 		return err
 	}
