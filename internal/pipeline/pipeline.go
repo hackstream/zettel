@@ -13,7 +13,6 @@ import (
 	"github.com/yourbasic/graph"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
-	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/renderer/html"
 	"gopkg.in/yaml.v3"
 )
@@ -107,12 +106,8 @@ func ReplaceLinks(posts []Post) error {
 func ConvertMarkdownToHTML(posts []Post) error {
 	md := goldmark.New(
 		goldmark.WithExtensions(extension.GFM),
-		goldmark.WithParserOptions(
-			parser.WithAutoHeadingID(),
-		),
 		goldmark.WithRendererOptions(
-			html.WithHardWraps(),
-			html.WithXHTML(),
+			html.WithUnsafe(),
 		),
 	)
 

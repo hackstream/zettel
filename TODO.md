@@ -20,5 +20,3 @@
 - [ ] Frontend UI for zettel
 - [ ] Editor Plugins
 - [ ] Hosted zettel ($$$)
-
- 
