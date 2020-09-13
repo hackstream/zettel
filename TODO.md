@@ -3,3 +3,4 @@
 - [x] `zettel build`
 - [ ] Add graph visualisation of all the connections
 - [ ] Add search for posts
+- [ ] Add docs using `zettel` and host on Github Pages

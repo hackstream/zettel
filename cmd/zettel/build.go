@@ -26,6 +26,7 @@ func (hub *Hub) makeDist() error {
 		path.Join(defaultDistDir, "images"),
 		path.Join(defaultDistDir, "posts"),
 		path.Join(defaultDistDir, "tags"),
+		path.Join(defaultDistDir, "data"),
 	}
 
 	for _, d := range dirs {
@@ -39,6 +40,7 @@ func (hub *Hub) makeDist() error {
 	globs := map[string]string{
 		"/templates/layouts/css/*":    path.Join(defaultDistDir, "css"),
 		"/templates/layouts/images/*": path.Join(defaultDistDir, "images"),
+		"/templates/layouts/data/*":   path.Join(defaultDistDir, "data"),
 	}
 
 	for g, dir := range globs {

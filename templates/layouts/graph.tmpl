@@ -1,0 +1,26 @@
+{{ define "graph" }}
+<!doctype html>
+<html>
+    {{- template "header" . }}
+   <body>
+      <div id="page-container">
+        <div id="content-wrap">
+         {{- template "navbar" . }}
+         <section class="hero container">
+            <h2>Graph</h2>
+         </section>
+        <div id="graphContainer"></div>
+        </div>
+        {{- template "footer" . }}
+      </div>
+   </body>
+   <script>
+   sigma.parsers.json('data/data.json', {
+      container: 'graphContainer',
+      settings: {
+         defaultNodeColor: '#ec5148'
+      }
+   });
+   </script>
+</html>
+{{- end }}

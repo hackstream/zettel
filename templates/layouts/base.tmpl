@@ -14,17 +14,8 @@
             {{- end}}
             {{- template "post" . }}
          </div>
-         <div id="container"></div>
          {{- template "footer" . }}
       </div>
    </body>
-   <script>
-   sigma.parsers.json('data.json', {
-      container: 'graphContainer',
-      settings: {
-         defaultNodeColor: '#ec5148'
-      }
-   });
-   </script>
 </html>
 {{- end }}
