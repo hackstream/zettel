@@ -9,17 +9,45 @@
          <section class="hero container">
             <h2>Graph</h2>
          </section>
-        <div id="graphContainer"></div>
+         <div id="graphContainer"></div>
         </div>
         {{- template "footer" . }}
       </div>
    </body>
    <script>
    sigma.parsers.json('data/graph.json', {
+      renderer: {
+         container: document.getElementById('graphContainer'),
+         type: 'canvas'
+      },
       container: 'graphContainer',
       settings: {
-         defaultNodeColor: '#ec5148'
+         defaultNodeColor: '#ec5148',
+         mouseEnabled: false,
+         mouseWheelEnabled: false,
+         doubleClickEnabled: false,
+         minEdgeSize: 0.5,
+         maxEdgeSize: 4,
+         enableEdgeHovering: true,
+         edgeHoverColor: 'edge',
+         defaultEdgeHoverColor: '#000',
+         edgeHoverSizeRatio: 1,
+         edgeHoverExtremities: true,
       }
+   });
+
+   // Bind the events:
+   sigma.bind('overNode outNode clickNode doubleClickNode rightClickNode', function(e) {
+   console.log(e.type, e.data.node.label, e.data.captor);
+   });
+   sigma.bind('overEdge outEdge clickEdge doubleClickEdge rightClickEdge', function(e) {
+   console.log(e.type, e.data.edge, e.data.captor);
+   });
+   sigma.bind('clickStage', function(e) {
+   console.log(e.type, e.data.captor);
+   });
+   sigma.bind('doubleClickStage rightClickStage', function(e) {
+   console.log(e.type, e.data.captor);
    });
    </script>
 </html>
