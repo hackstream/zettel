@@ -80,6 +80,8 @@ func (hub *Hub) renderTag(tag string, posts []pipeline.Post, isAllPosts bool) er
 		links = append(links, l)
 	}
 	tmplContext := make(map[string]interface{})
+	tmplContext["SiteName"] = hub.Config.SiteName
+	tmplContext["Description"] = hub.Config.Description
 	tmplContext["TagName"] = tag
 	tmplContext["Links"] = links
 	path := filepath.Join(defaultDistDir, "all.html")
