@@ -7,7 +7,6 @@
 - [ ] Add docs using `zettel` and host on Github Pages
 
 # Minor Tweaks
-- [ ] CamelCase the new title
 - [x] Graph should be static
 - [x] Date should be fixed in template
 - [x] UI tweaks and cleanups
