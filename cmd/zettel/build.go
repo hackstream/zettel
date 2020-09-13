@@ -120,7 +120,7 @@ func (hub *Hub) build(cliCtx *cli.Context) error {
 			// If it is, we will skip, since we only need connections from other post to this.
 			co := posts[n]
 			isInnerLink := false
-			s := strings.TrimRight(path.Base(co.FilePath), ".md")
+			s := strings.TrimSuffix(path.Base(co.FilePath), ".md")
 			for _, l := range p.Links {
 				if l.Slug == s {
 					isInnerLink = true

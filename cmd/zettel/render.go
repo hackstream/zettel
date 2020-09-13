@@ -45,7 +45,7 @@ func (hub *Hub) renderPost(post pipeline.Post) error {
 	tmplContext["IsIndex"] = false
 	tmplContext["Post"] = post
 
-	slug := strings.Trim(path.Base(post.FilePath), ".md")
+	slug := strings.TrimSuffix(path.Base(post.FilePath), ".md")
 	path := filepath.Join(defaultDistDir, "posts", fmt.Sprintf("%s.html", slug))
 	file, err := os.Create(path)
 	if err != nil {
@@ -71,7 +71,7 @@ func (hub *Hub) renderTag(tag string, posts []pipeline.Post, isAllPosts bool) er
 	links := []pipeline.Link{}
 	for _, p := range posts {
 		l := pipeline.Link{
-			Slug:  strings.TrimRight(path.Base(p.FilePath), ".md"),
+			Slug:  strings.TrimSuffix(path.Base(p.FilePath), ".md"),
 			Title: p.Meta.Title,
 		}
 		links = append(links, l)

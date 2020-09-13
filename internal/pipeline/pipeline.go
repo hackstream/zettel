@@ -70,7 +70,7 @@ func ReplaceLinks(posts []Post) error {
 	slugs := make(map[string]Metadata)
 	for _, p := range posts {
 		pth := path.Base(p.FilePath)
-		slug := strings.TrimRight(pth, ".md")
+		slug := strings.TrimSuffix(pth, ".md")
 		slugs[slug] = p.Meta
 	}
 
@@ -80,7 +80,7 @@ func ReplaceLinks(posts []Post) error {
 		matches := findLinks(p.Body)
 		for _, m := range matches {
 			sg := strings.TrimLeft(m, "[[")
-			sg = strings.TrimRight(sg, "]]")
+			sg = strings.TrimSuffix(sg, "]]")
 
 			// Find if the slug exists
 			meta, ok := slugs[sg]
@@ -137,7 +137,7 @@ func MakeGraph(posts []Post) (*graph.Mutable, error) {
 	slugs := make(map[string]int)
 	for i, p := range posts {
 		pth := path.Base(p.FilePath)
-		slug := strings.TrimRight(pth, ".md")
+		slug := strings.TrimSuffix(pth, ".md")
 		slugs[slug] = i
 	}
 

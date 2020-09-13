@@ -14,3 +14,11 @@
 
 # Good to have
 - [ ] Add search for posts
+- [ ] Extensible Themes
+
+# Aspirational
+- [ ] Frontend UI for zettel
+- [ ] Editor Plugins
+- [ ] Hosted zettel ($$$)
+
+ 
