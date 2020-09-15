@@ -3,7 +3,7 @@ module github.com/hackstream/zettel
 go 1.15
 
 require (
-	github.com/athul/goldmark-mathjax v0.0.0-20200915094416-54cf0d3921d6
+	github.com/athul/goldmark-mathjax v0.0.0-20200915111444-caefe5ba6cf8
 	github.com/knadh/koanf v0.12.1
 	github.com/knadh/stuffbin v1.1.0
 	github.com/pelletier/go-toml v1.8.0
