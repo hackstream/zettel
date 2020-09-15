@@ -48,6 +48,11 @@ func ReadFiles(directory string) ([]Post, error) {
 			return err
 		}
 
+		// If the post is a draft, skip the file
+		if post.Meta.Draft {
+			return nil
+		}
+
 		// Join the body back ignoring the frontmatter
 		post.Body = string(bytes.Join(splits[2:], []byte("---\n")))
 

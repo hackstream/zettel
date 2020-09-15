@@ -9,6 +9,7 @@ type Metadata struct {
 	Date  time.Time `yaml:"date"`
 	Tags  []string  `yaml:"tags"`
 	Title string    `yaml:"title"`
+	Draft bool      `yaml:"draft"`
 }
 
 // Link is the link given to another post.
