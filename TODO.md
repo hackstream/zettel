@@ -4,7 +4,7 @@
 - [x] `zettel new -s $SLUG_NAME` -> slug.md
 - [x] `zettel build`
 - [x] Add graph visualisation of all the connections
-- [ ] Add docs using `zettel` and host on Github Pages
+- [x] Add docs using `zettel` and host on Github Pages/Netlify
 
 # Minor Tweaks
 - [x] Graph should be static
