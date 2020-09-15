@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	mathjax "github.com/athul/goldmark-mathjax"
 	"github.com/yourbasic/graph"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
@@ -110,7 +111,7 @@ func ReplaceLinks(posts []Post) error {
 // ConvertMarkdownToHTML converts post's body into HTML
 func ConvertMarkdownToHTML(posts []Post) error {
 	md := goldmark.New(
-		goldmark.WithExtensions(extension.GFM),
+		goldmark.WithExtensions(extension.GFM, mathjax.MathJax),
 		goldmark.WithRendererOptions(
 			html.WithUnsafe(),
 		),
