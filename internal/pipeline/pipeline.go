@@ -20,8 +20,7 @@ import (
 // ReadFiles reads the given directory and appends into given posts
 func ReadFiles(directory string) ([]Post, error) {
 	posts := []Post{}
-	err := filepath.Walk(directory, func(path string, info os.FileInfo, err error) error {
-		// log.Printf("calling for %s, %v, %v", path, info, err)
+	err := filepath.Walk(directory, func(pth string, info os.FileInfo, err error) error {
 		// Return if there is an error
 		if err != nil {
 			return err
@@ -31,10 +30,15 @@ func ReadFiles(directory string) ([]Post, error) {
 			return nil
 		}
 
-		post := NewPost(path)
+		// Skip any files which aren't markdown.
+		if !strings.HasSuffix(path.Base(pth), ".md") {
+			return nil
+		}
+
+		post := NewPost(pth)
 
 		// Read the file
-		data, err := ioutil.ReadFile(path)
+		data, err := ioutil.ReadFile(pth)
 		if err != nil {
 			return err
 		}
