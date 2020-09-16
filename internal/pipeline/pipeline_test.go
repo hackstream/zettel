@@ -58,7 +58,7 @@ func TestConvertMarkdownToHTML(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = ConvertMarkdownToHTML(posts)
+	err = ConvertMarkdownToHTML(posts, "dracula")
 	if err != nil {
 		t.Fatal(err)
 	}

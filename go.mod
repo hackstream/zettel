@@ -3,6 +3,8 @@ module github.com/hackstream/zettel
 go 1.15
 
 require (
+	github.com/PuerkitoBio/goquery v1.5.1
+	github.com/alecthomas/chroma v0.8.0
 	github.com/athul/goldmark-mathjax v0.0.0-20200915111444-caefe5ba6cf8
 	github.com/knadh/koanf v0.12.1
 	github.com/knadh/stuffbin v1.1.0
