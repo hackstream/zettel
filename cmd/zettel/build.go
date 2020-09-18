@@ -21,8 +21,7 @@ func (hub *Hub) BuildSite() *cli.Command {
 
 func (hub *Hub) makeDist() error {
 	// Clear dist directory
-	err := os.RemoveAll(defaultDistDir)
-	if err != nil {
+	if err := os.RemoveAll(defaultDistDir); err != nil {
 		return err
 	}
 
@@ -36,8 +35,7 @@ func (hub *Hub) makeDist() error {
 	}
 
 	for _, d := range dirs {
-		err := createDirectory(d)
-		if err != nil {
+		if err := createDirectory(d); err != nil {
 			return err
 		}
 	}
@@ -54,6 +52,7 @@ func (hub *Hub) makeDist() error {
 		if err != nil {
 			return err
 		}
+
 		for _, f := range files {
 			b, err := hub.Fs.Read(f)
 			if err != nil {
@@ -65,12 +64,12 @@ func (hub *Hub) makeDist() error {
 				return err
 			}
 
-			_, err = fd.Write(b)
-			if err != nil {
+			if _, err = fd.Write(b); err != nil {
 				return err
 			}
 		}
 	}
+
 	return nil
 }
 
@@ -79,44 +78,50 @@ func (hub *Hub) build(cliCtx *cli.Context) error {
 	if err != nil {
 		return err
 	}
-	err = pipeline.ReplaceLinks(posts, hub.Config.SitePrefix)
-	if err != nil {
+	if err = pipeline.ReplaceLinks(posts, hub.Config.SitePrefix); err != nil {
 		return err
 	}
-	err = pipeline.ConvertMarkdownToHTML(posts, hub.Config.Pygmentsstyle)
-	if err != nil {
+	if err = pipeline.ConvertMarkdownToHTML(posts, hub.Config.Pygmentsstyle); err != nil {
 		return err
 	}
+
 	g, err := pipeline.MakeGraph(posts)
 	if err != nil {
 		return err
 	}
-	err = hub.makeDist()
-	if err != nil {
+
+	if err = hub.makeDist(); err != nil {
 		return err
 	}
 
 	// Aggregate all tags
 	tags := make(map[string][]pipeline.Post)
 
+	var (
+		ps []pipeline.Post
+		ok bool
+	)
+
 	for i := 0; i < len(posts); i++ {
 		p := posts[i]
 		// Put this post in the appropriate tags
 		for _, t := range p.Meta.Tags {
-			ps, ok := tags[t]
+			ps, ok = tags[t]
 			if !ok {
 				tags[t] = []pipeline.Post{p}
 				continue
 			}
+
 			ps = append(ps, p)
 			tags[t] = ps
 		}
+
 		// If index, call render index
 		if path.Base(p.FilePath) == defaultindexFileName {
-			err := hub.renderIndex(p)
-			if err != nil {
+			if err = hub.renderIndex(p); err != nil {
 				return err
 			}
+
 			continue
 		}
 
@@ -127,6 +132,7 @@ func (hub *Hub) build(cliCtx *cli.Context) error {
 			// If it is, we will skip, since we only need connections from other post to this.
 			co := posts[n]
 			isInnerLink := false
+
 			s := strings.TrimSuffix(path.Base(co.FilePath), ".md")
 			for _, l := range p.Links {
 				if l.Slug == s {
@@ -134,13 +140,16 @@ func (hub *Hub) build(cliCtx *cli.Context) error {
 					break
 				}
 			}
+
 			coLink := pipeline.Link{
 				Title: co.Meta.Title,
 				Slug:  s,
 			}
+
 			if !isInnerLink {
 				conns = append(conns, coLink)
 			}
+
 			return false
 		}
 
@@ -149,26 +158,26 @@ func (hub *Hub) build(cliCtx *cli.Context) error {
 
 		p.Connections = conns
 
-		err := hub.renderPost(p)
-		if err != nil {
+		if err = hub.renderPost(p); err != nil {
 			return err
 		}
 	}
 
 	// Render tags
 	for tag, ps := range tags {
-		err := hub.renderTag(tag, ps, false)
-		if err != nil {
+		if err = hub.renderTag(tag, ps, false); err != nil {
 			return err
 		}
 	}
 
 	// Render all posts file and remove index
 	postsWithoutIndex := make([]pipeline.Post, 0, len(posts)-1)
+
 	for _, p := range posts {
 		if path.Base(p.FilePath) == defaultindexFileName {
 			continue
 		}
+
 		postsWithoutIndex = append(postsWithoutIndex, p)
 	}
 
@@ -179,10 +188,6 @@ func (hub *Hub) build(cliCtx *cli.Context) error {
 
 	// Render graph.json
 	gd := MakeGraphData(posts, g)
-	err = hub.renderGraphData(gd)
-	if err != nil {
-		return err
-	}
 
-	return nil
+	return hub.renderGraphData(gd)
 }

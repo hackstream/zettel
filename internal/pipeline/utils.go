@@ -23,6 +23,7 @@ func findLinks(body string) []string {
 	for i, m := range matches {
 		matches[i] = strings.TrimSpace(m)
 	}
+
 	return matches
 }
 
