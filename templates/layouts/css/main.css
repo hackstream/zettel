@@ -73,3 +73,11 @@ footer {
 .date {
 	color: #9b9b9b;
 }
+code {
+	font-size: initial;
+}
+code>pre{
+	padding: inherit;
+	border-radius: 4px;
+	overflow: auto;
+}

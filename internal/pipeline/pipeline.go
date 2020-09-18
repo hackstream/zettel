@@ -113,7 +113,7 @@ func ReplaceLinks(posts []Post) error {
 }
 
 // ConvertMarkdownToHTML converts post's body into HTML
-func ConvertMarkdownToHTML(posts []Post) error {
+func ConvertMarkdownToHTML(posts []Post, syntaxStyle string) error {
 	md := goldmark.New(
 		goldmark.WithExtensions(extension.GFM, mathjax.MathJax),
 		goldmark.WithRendererOptions(
@@ -124,12 +124,14 @@ func ConvertMarkdownToHTML(posts []Post) error {
 	for i, p := range posts {
 		html := bytes.NewBuffer([]byte{})
 
-		err := md.Convert([]byte(p.Body), html)
+		if err := md.Convert([]byte(p.Body), html); err != nil {
+			return err
+		}
+		body, err := SyntaxHighlighter(html.Bytes(), syntaxStyle)
 		if err != nil {
 			return err
 		}
-
-		posts[i].Body = string(html.Bytes())
+		posts[i].Body = body
 	}
 
 	return nil
