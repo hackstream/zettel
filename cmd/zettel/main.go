@@ -34,14 +34,21 @@ func initLogger(verbose bool) *logrus.Logger {
 // initFileSystem initializes the stuffbin FileSystem to provide
 // access to bunded static assets to the app.
 func initFileSystem(binPath string) (stuffbin.FileSystem, error) {
+	files := []string{
+		"../../templates/",
+	}
 	ex, err := os.Executable()
 	if err != nil {
 		panic(err)
 	}
 	exPath := filepath.Dir(ex)
+
 	fs, err := stuffbin.UnStuff(filepath.Join(exPath, filepath.Base(os.Args[0])))
 	if err != nil {
-		return nil, err
+		fs, err = stuffbin.NewLocalFS("/", files...)
+		if err != nil {
+			return nil, err
+		}
 	}
 	return fs, nil
 }
@@ -64,9 +71,11 @@ func main() {
 			Usage: "Enable verbose logging",
 		},
 	}
+
 	var (
 		logger = initLogger(true)
 	)
+
 	// Initialize the static file system into which all
 	// required static assets (.css, .js files etc.) are loaded.
 	fs, err := initFileSystem(os.Args[0])
