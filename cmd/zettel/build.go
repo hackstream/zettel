@@ -78,10 +78,12 @@ func (hub *Hub) build(cliCtx *cli.Context) error {
 	if err != nil {
 		return err
 	}
+
 	if err = pipeline.ReplaceLinks(posts, hub.Config.SitePrefix); err != nil {
 		return err
 	}
-	if err = pipeline.ConvertMarkdownToHTML(posts, hub.Config.Pygmentsstyle); err != nil {
+
+	if err = pipeline.ConvertMarkdownToHTML(posts, hub.Config.SitePrefix); err != nil {
 		return err
 	}
 

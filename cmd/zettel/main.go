@@ -44,6 +44,7 @@ func initFileSystem() (stuffbin.FileSystem, error) {
 
 	exPath := filepath.Dir(ex)
 	fs, err := stuffbin.UnStuff(filepath.Join(exPath, filepath.Base(os.Args[0])))
+
 	if err != nil {
 		return nil, err
 	}
@@ -69,9 +70,9 @@ func main() {
 			Usage: "Enable verbose logging",
 		},
 	}
-	var (
-		logger = initLogger(true)
-	)
+
+	var logger = initLogger(true)
+
 	// Initialize the static file system into which all
 	// required static assets (.css, .js files etc.) are loaded.
 	fs, err := initFileSystem()

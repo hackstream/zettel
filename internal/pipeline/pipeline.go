@@ -131,10 +131,12 @@ func ConvertMarkdownToHTML(posts []Post, syntaxStyle string) error {
 		if err := md.Convert([]byte(p.Body), html); err != nil {
 			return err
 		}
+
 		body, err := SyntaxHighlighter(html.Bytes(), syntaxStyle)
 		if err != nil {
 			return err
 		}
+
 		posts[i].Body = body
 	}
 

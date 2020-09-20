@@ -74,5 +74,6 @@ func getInitialTmplContext(cfg Config) map[string]interface{} {
 	tmplContext["SiteName"] = cfg.SiteName
 	tmplContext["Description"] = cfg.Description
 	tmplContext["SitePrefix"] = cfg.SitePrefix
+
 	return tmplContext
 }

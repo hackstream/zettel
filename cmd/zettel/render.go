@@ -71,6 +71,7 @@ func (hub *Hub) renderTag(tag string, posts []pipeline.Post, isAllPosts bool) er
 		}
 		links = append(links, l)
 	}
+
 	tmplContext := getInitialTmplContext(hub.Config)
 	tmplContext["TagName"] = tag
 	tmplContext["Links"] = links
@@ -124,9 +125,6 @@ func (hub *Hub) renderGraphData(graphData GraphData) error {
 	}
 
 	tmplContext := getInitialTmplContext(hub.Config)
-	err = saveResource("graph", tmpls, file, tmplContext, hub.Fs)
-	if err != nil {
-		return err
-	}
-	return nil
+
+	return saveResource("graph", tmpls, file, tmplContext, hub.Fs)
 }
