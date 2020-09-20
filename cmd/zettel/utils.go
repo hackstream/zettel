@@ -71,3 +71,11 @@ func createDirectory(dir string) error {
 	}
 	return err
 }
+
+func getInitialTmplContext(cfg Config) map[string]interface{} {
+	tmplContext := make(map[string]interface{})
+	tmplContext["SiteName"] = cfg.SiteName
+	tmplContext["Description"] = cfg.Description
+	tmplContext["SitePrefix"] = cfg.SitePrefix
+	return tmplContext
+}

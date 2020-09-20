@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"strings"
 
 	"github.com/knadh/koanf"
 	"github.com/knadh/koanf/parsers/toml"
@@ -20,6 +22,20 @@ func initConfig(c *cli.Context) (Config, error) {
 	}
 	// Read the configuration and load it to internal struct.
 	err := ko.Unmarshal("", &cfg)
+
+	// Sanitize site prefix
+	var (
+		sitePrefix string
+	)
+	if cfg.SitePrefix != "" {
+		if !strings.HasPrefix(cfg.SitePrefix, "/") {
+			sitePrefix = fmt.Sprintf("/%s", cfg.SitePrefix)
+		}
+		if strings.HasSuffix(cfg.SitePrefix, "/") {
+			sitePrefix = strings.TrimSuffix(sitePrefix, "/")
+		}
+	}
+	cfg.SitePrefix = sitePrefix
 	return cfg, err
 }
 

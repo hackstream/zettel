@@ -37,7 +37,7 @@ func TestReplaceLinks(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = ReplaceLinks(posts)
+	err = ReplaceLinks(posts, "")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -53,7 +53,7 @@ func TestConvertMarkdownToHTML(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = ReplaceLinks(posts)
+	err = ReplaceLinks(posts, "")
 	if err != nil {
 		t.Fatal(err)
 	}
