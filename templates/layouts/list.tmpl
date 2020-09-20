@@ -13,9 +13,9 @@
             <ul>
             {{- range .Links}}
                 {{- if eq .Slug "index"}}
-                    <li><a href="/">{{.Title}}</a></li>
+                    <li><a href="{{$.SitePrefix}}">{{.Title}}</a></li>
                 {{- else}}
-                    <li><a href="/posts/{{.Slug}}.html">{{.Title}}</a></li>
+                    <li><a href="{{$.SitePrefix}}/posts/{{.Slug}}.html">{{.Title}}</a></li>
                 {{- end}} 
             {{- end}}
             </ul>

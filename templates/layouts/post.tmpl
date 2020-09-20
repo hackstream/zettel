@@ -16,9 +16,9 @@
             <ul>
                 {{- range .Post.Connections}}
                     {{- if eq .Slug "index"}}
-                        <li><a href="/">{{.Title}}</a></li>
+                        <li><a href="{{$.SitePrefix}}/">{{.Title}}</a></li>
                     {{- else}}
-                        <li><a href="/posts/{{.Slug}}.html">{{.Title}}</a></li>
+                        <li><a href="{{$.SitePrefix}}/posts/{{.Slug}}.html">{{.Title}}</a></li>
                     {{- end}}    
                 {{- end}}
             </ul>
@@ -28,7 +28,7 @@
 {{- if .Post.Meta.Tags}}
     <section class="container tags">
         {{- range $t := .Post.Meta.Tags}}
-            <a href="/tags/{{$t}}.html"><button class='outline'>{{$t}}</button></a>
+            <a href="{{$.SitePrefix}}/tags/{{$t}}.html"><button class='outline'>{{$t}}</button></a>
         {{- end}}
     </section>
 {{- end}}

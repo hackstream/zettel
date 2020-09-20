@@ -79,7 +79,7 @@ func (hub *Hub) build(cliCtx *cli.Context) error {
 	if err != nil {
 		return err
 	}
-	err = pipeline.ReplaceLinks(posts)
+	err = pipeline.ReplaceLinks(posts, hub.Config.SitePrefix)
 	if err != nil {
 		return err
 	}

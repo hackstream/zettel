@@ -12,9 +12,7 @@ import (
 )
 
 func (hub *Hub) renderIndex(post pipeline.Post) error {
-	tmplContext := make(map[string]interface{})
-	tmplContext["SiteName"] = hub.Config.SiteName
-	tmplContext["Description"] = hub.Config.Description
+	tmplContext := getInitialTmplContext(hub.Config)
 	tmplContext["IsIndex"] = true
 	tmplContext["Post"] = post
 
@@ -39,9 +37,7 @@ func (hub *Hub) renderIndex(post pipeline.Post) error {
 }
 
 func (hub *Hub) renderPost(post pipeline.Post) error {
-	tmplContext := make(map[string]interface{})
-	tmplContext["SiteName"] = hub.Config.SiteName
-	tmplContext["Description"] = hub.Config.Description
+	tmplContext := getInitialTmplContext(hub.Config)
 	tmplContext["IsIndex"] = false
 	tmplContext["Post"] = post
 
@@ -76,9 +72,7 @@ func (hub *Hub) renderTag(tag string, posts []pipeline.Post, isAllPosts bool) er
 		}
 		links = append(links, l)
 	}
-	tmplContext := make(map[string]interface{})
-	tmplContext["SiteName"] = hub.Config.SiteName
-	tmplContext["Description"] = hub.Config.Description
+	tmplContext := getInitialTmplContext(hub.Config)
 	tmplContext["TagName"] = tag
 	tmplContext["Links"] = links
 	path := filepath.Join(defaultDistDir, "all.html")
@@ -127,10 +121,7 @@ func (hub *Hub) renderGraphData(graphData GraphData) error {
 		"templates/layouts/footer.tmpl",
 	}
 
-	tmplContext := make(map[string]interface{})
-	tmplContext["SiteName"] = hub.Config.SiteName
-	tmplContext["Description"] = hub.Config.Description
-
+	tmplContext := getInitialTmplContext(hub.Config)
 	err = saveResource("graph", tmpls, file, tmplContext, hub.Fs)
 	if err != nil {
 		return err
