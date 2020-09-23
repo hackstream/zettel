@@ -88,7 +88,7 @@ func ReplaceLinks(posts []Post, sitePrefix string) error {
 		// Find all the matches first
 		matches := findLinks(p.Body)
 		for _, m := range matches {
-			sg := strings.TrimLeft(m, "[[")
+			sg := strings.TrimPrefix(m, "[[")
 			sg = strings.TrimSuffix(sg, "]]")
 
 			// Find if the slug exists
