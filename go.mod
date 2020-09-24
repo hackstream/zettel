@@ -7,6 +7,8 @@ require (
 	github.com/alecthomas/chroma v0.8.0
 	github.com/athul/goldmark-mathjax v0.0.0-20200915111444-caefe5ba6cf8
 	github.com/fsnotify/fsnotify v1.4.9
+	github.com/gorilla/mux v1.8.0
+	github.com/gorilla/websocket v1.4.2
 	github.com/knadh/koanf v0.12.1
 	github.com/knadh/stuffbin v1.1.0
 	github.com/pelletier/go-toml v1.8.0
