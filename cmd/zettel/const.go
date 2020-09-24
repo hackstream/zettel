@@ -7,3 +7,8 @@ const (
 	defaultPostDir       = "content"
 	defaultDistDir       = "dist"
 )
+
+const (
+	// DefaultPort is the default port for server
+	DefaultPort = 6969
+)

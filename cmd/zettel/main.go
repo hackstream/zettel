@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/fsnotify/fsnotify"
 	"github.com/knadh/stuffbin"
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
@@ -53,6 +54,7 @@ func initFileSystem() (stuffbin.FileSystem, error) {
 }
 
 func main() {
+
 	// Intialize new CLI app
 	app := cli.NewApp()
 	app.Name = "zettel"
@@ -79,14 +81,29 @@ func main() {
 	if err != nil {
 		logger.Errorf("error reading stuffed binary: %s", err)
 	}
+
+	watcher, err := fsnotify.NewWatcher()
+	if err != nil {
+		logger.Fatalln(err)
+	}
+	defer watcher.Close()
+
+	hubcfg := hubCfg{
+		logger:       logger,
+		buildVersion: buildVersion,
+		fs:           fs,
+		watcher:      watcher,
+	}
+
 	// Initialize hub.
-	hub := NewHub(logger, fs, buildVersion)
+	hub := NewHub(hubcfg)
 
 	// Register commands.
 	app.Commands = []*cli.Command{
 		hub.InitProject(),
 		hub.NewPost(),
 		hub.BuildSite(),
+		hub.StartServer(),
 	}
 
 	// Run the app.
