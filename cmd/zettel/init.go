@@ -20,7 +20,7 @@ func (hub *Hub) InitProject(config Config) *cli.Command {
 		ArgsUsage: "[SITENAME]",
 		Before: func(c *cli.Context) error {
 			if c.Args().First() == "" {
-				return errors.New("Site name is missing")
+				return errors.New("site name is missing")
 			}
 			return nil
 		},

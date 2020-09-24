@@ -20,7 +20,7 @@ func (hub *Hub) NewPost(config Config) *cli.Command {
 		ArgsUsage: "[TITLE]",
 		Before: func(c *cli.Context) error {
 			if c.Args().First() == "" {
-				return errors.New("Title is missing")
+				return errors.New("title is missing")
 			}
 			return nil
 		},

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -51,7 +52,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "zettel"
 	app.Usage = "Zettel builds a digital Zettelkasten website for your notes in Markdown."
-	app.Version = buildVersion
+	app.Version = fmt.Sprintf("%s, %s", buildVersion, buildDate)
 	app.Authors = []*cli.Author{
 		{
 			Name: "Hackstream Devs",
