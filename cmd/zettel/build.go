@@ -97,7 +97,7 @@ func (hub *Hub) build(cliCtx *cli.Context) error {
 	}
 
 	// Aggregate all tags
-	tags := make(map[string][]pipeline.Post, 0)
+	tags := make(map[string][]pipeline.Post)
 
 	for i := 0; i < len(posts); i++ {
 		p := posts[i]
@@ -109,6 +109,7 @@ func (hub *Hub) build(cliCtx *cli.Context) error {
 				continue
 			}
 			ps = append(ps, p)
+			tags[t] = ps
 		}
 		// If index, call render index
 		if path.Base(p.FilePath) == defaultindexFileName {
