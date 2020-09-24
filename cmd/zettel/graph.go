@@ -51,7 +51,9 @@ func MakeGraphData(posts []pipeline.Post, graph *graph.Mutable) GraphData {
 			X:     rand.Float64(),
 			Y:     rand.Float64(),
 		}
+
 		graphData.Nodes = append(graphData.Nodes, node)
+
 		for j := i + 1; j < len(posts); j++ {
 			if graph.Edge(i, j) {
 				edge := Edge{

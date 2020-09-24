@@ -22,6 +22,7 @@ func initLogger(verbose bool) *logrus.Logger {
 	logger.SetFormatter(&logrus.TextFormatter{
 		FullTimestamp: true,
 	})
+
 	// Set logger level
 	if verbose {
 		logger.SetLevel(logrus.DebugLevel)
@@ -29,21 +30,25 @@ func initLogger(verbose bool) *logrus.Logger {
 	} else {
 		logger.SetLevel(logrus.InfoLevel)
 	}
+
 	return logger
 }
 
 // initFileSystem initializes the stuffbin FileSystem to provide
 // access to bunded static assets to the app.
-func initFileSystem(binPath string) (stuffbin.FileSystem, error) {
+func initFileSystem() (stuffbin.FileSystem, error) {
 	ex, err := os.Executable()
 	if err != nil {
 		panic(err)
 	}
+
 	exPath := filepath.Dir(ex)
 	fs, err := stuffbin.UnStuff(filepath.Join(exPath, filepath.Base(os.Args[0])))
+
 	if err != nil {
 		return nil, err
 	}
+
 	return fs, nil
 }
 
@@ -65,12 +70,12 @@ func main() {
 			Usage: "Enable verbose logging",
 		},
 	}
-	var (
-		logger = initLogger(true)
-	)
+
+	var logger = initLogger(true)
+
 	// Initialize the static file system into which all
 	// required static assets (.css, .js files etc.) are loaded.
-	fs, err := initFileSystem(os.Args[0])
+	fs, err := initFileSystem()
 	if err != nil {
 		logger.Errorf("error reading stuffed binary: %s", err)
 	}
@@ -79,14 +84,15 @@ func main() {
 
 	// Register commands.
 	app.Commands = []*cli.Command{
-		hub.InitProject(hub.Config),
-		hub.NewPost(hub.Config),
+		hub.InitProject(),
+		hub.NewPost(),
 		hub.BuildSite(),
 	}
+
 	// Run the app.
-	hub.Logger.Info("Starting zettel...")
-	err = app.Run(os.Args)
-	if err != nil {
+	hub.Logger.Info("Starting zettel...🚀")
+
+	if err = app.Run(os.Args); err != nil {
 		logger.Errorf("OOPS: %s", err)
 	}
 }

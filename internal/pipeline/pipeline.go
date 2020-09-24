@@ -39,7 +39,7 @@ func ReadFiles(directory string) ([]Post, error) {
 		post := NewPost(pth)
 
 		// Read the file
-		data, err := ioutil.ReadFile(pth)
+		data, err := ioutil.ReadFile(path.Clean(pth))
 		if err != nil {
 			return err
 		}
@@ -63,11 +63,14 @@ func ReadFiles(directory string) ([]Post, error) {
 
 		// Append the post to the posts
 		posts = append(posts, post)
+
 		return nil
 	})
+
 	if err != nil {
 		return []Post{}, err
 	}
+
 	return posts, nil
 }
 
@@ -77,6 +80,7 @@ func ReplaceLinks(posts []Post, sitePrefix string) error {
 	// if there's a link to any non existent file and also
 	// to get the metadata of the file
 	slugs := make(map[string]Metadata)
+
 	for _, p := range posts {
 		pth := path.Base(p.FilePath)
 		slug := strings.TrimSuffix(pth, ".md")
@@ -127,10 +131,12 @@ func ConvertMarkdownToHTML(posts []Post, syntaxStyle string) error {
 		if err := md.Convert([]byte(p.Body), html); err != nil {
 			return err
 		}
+
 		body, err := SyntaxHighlighter(html.Bytes(), syntaxStyle)
 		if err != nil {
 			return err
 		}
+
 		posts[i].Body = body
 	}
 
@@ -142,6 +148,7 @@ func MakeGraph(posts []Post) (*graph.Mutable, error) {
 	// Make a map of all posts with their index
 	// so that it would be easy to lookup the index using the slug
 	slugs := make(map[string]int)
+
 	for i, p := range posts {
 		pth := path.Base(p.FilePath)
 		slug := strings.TrimSuffix(pth, ".md")

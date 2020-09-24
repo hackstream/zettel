@@ -20,5 +20,6 @@ func NewHub(logger *logrus.Logger, fs stuffbin.FileSystem, buildVersion string) 
 		Fs:      fs,
 		Version: buildVersion,
 	}
+
 	return hub
 }

@@ -11,7 +11,7 @@ import (
 )
 
 // NewPost initializes git repo and copies a sample config
-func (hub *Hub) NewPost(config Config) *cli.Command {
+func (hub *Hub) NewPost() *cli.Command {
 	return &cli.Command{
 		Name:      "new",
 		Aliases:   []string{"n"},
@@ -22,6 +22,7 @@ func (hub *Hub) NewPost(config Config) *cli.Command {
 			if c.Args().First() == "" {
 				return errors.New("title is missing")
 			}
+
 			return nil
 		},
 	}
@@ -37,9 +38,11 @@ func (hub *Hub) newPost(cliCtx *cli.Context) error {
 	// clean up title
 	sanitizedTitle := strings.ToLower(title)
 	sanitizedTitle = strings.ReplaceAll(sanitizedTitle, " ", "-")
+
 	if len(sanitizedTitle) > maxTitleLength {
 		sanitizedTitle = sanitizedTitle[:maxTitleLength]
 	}
+
 	sanitizedTitle = sanitizedTitle + ".md"
 
 	// persist the new post
@@ -47,11 +50,14 @@ func (hub *Hub) newPost(cliCtx *cli.Context) error {
 	if err != nil {
 		return err
 	}
+
 	path := filepath.Join(currentDir, defaultPostDir, sanitizedTitle)
+
 	post, err := os.Create(path)
 	if err != nil {
 		return err
 	}
+
 	// render post template
 	err = saveResource("index", []string{"templates/post.tmpl"}, post, cfg, hub.Fs)
 	if err != nil {
@@ -59,5 +65,6 @@ func (hub *Hub) newPost(cliCtx *cli.Context) error {
 	}
 
 	hub.Logger.Infof("New post created! %s", path)
+
 	return nil
 }

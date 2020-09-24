@@ -1,49 +1,38 @@
 package main
 
 import (
-	"fmt"
 	"log"
-	"strings"
 
 	"github.com/knadh/koanf"
 	"github.com/knadh/koanf/parsers/toml"
 	"github.com/knadh/koanf/providers/file"
-	"github.com/urfave/cli/v2"
 )
 
 // initConfig initializes the app's configuration manager.
-func initConfig(c *cli.Context) (Config, error) {
-	var cfg = Config{}
-	var ko = koanf.New(".")
+func initConfig() (Config, error) {
+	var (
+		cfg = Config{}
+		ko  = koanf.New(".")
+	)
 
 	log.Printf("reading config: %s", defaultconfigName)
+
 	if err := ko.Load(file.Provider(defaultconfigName), toml.Parser()); err != nil {
 		log.Fatalf("error reading config: %v", err)
 	}
+
 	// Read the configuration and load it to internal struct.
 	err := ko.Unmarshal("", &cfg)
 
-	// Sanitize site prefix
-	var (
-		sitePrefix string
-	)
-	if cfg.SitePrefix != "" {
-		if !strings.HasPrefix(cfg.SitePrefix, "/") {
-			sitePrefix = fmt.Sprintf("/%s", cfg.SitePrefix)
-		}
-		if strings.HasSuffix(cfg.SitePrefix, "/") {
-			sitePrefix = strings.TrimSuffix(sitePrefix, "/")
-		}
-	}
-	cfg.SitePrefix = sitePrefix
 	return cfg, err
 }
 
-func gatherDefaultConfig() (Config, error) {
+func gatherDefaultConfig() Config {
 	config := Config{
 		SiteName:      "My Zettel",
 		Description:   "Hello World. This is my zettel notebook",
 		Pygmentsstyle: "monokailight",
 	}
-	return config, nil
+
+	return config
 }

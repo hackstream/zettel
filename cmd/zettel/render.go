@@ -17,10 +17,12 @@ func (hub *Hub) renderIndex(post pipeline.Post) error {
 	tmplContext["Post"] = post
 
 	path := filepath.Join(defaultDistDir, "index.html")
+
 	file, err := os.Create(path)
 	if err != nil {
 		return err
 	}
+
 	// render post template
 	tmpls := []string{
 		"templates/layouts/base.tmpl",
@@ -29,11 +31,8 @@ func (hub *Hub) renderIndex(post pipeline.Post) error {
 		"templates/layouts/post.tmpl",
 		"templates/layouts/footer.tmpl",
 	}
-	err = saveResource("base", tmpls, file, tmplContext, hub.Fs)
-	if err != nil {
-		return err
-	}
-	return nil
+
+	return saveResource("base", tmpls, file, tmplContext, hub.Fs)
 }
 
 func (hub *Hub) renderPost(post pipeline.Post) error {
@@ -43,10 +42,12 @@ func (hub *Hub) renderPost(post pipeline.Post) error {
 
 	slug := strings.TrimSuffix(path.Base(post.FilePath), ".md")
 	path := filepath.Join(defaultDistDir, "posts", fmt.Sprintf("%s.html", slug))
+
 	file, err := os.Create(path)
 	if err != nil {
 		return err
 	}
+
 	// render post template
 	tmpls := []string{
 		"templates/layouts/base.tmpl",
@@ -55,16 +56,14 @@ func (hub *Hub) renderPost(post pipeline.Post) error {
 		"templates/layouts/post.tmpl",
 		"templates/layouts/footer.tmpl",
 	}
-	err = saveResource("base", tmpls, file, tmplContext, hub.Fs)
-	if err != nil {
-		return err
-	}
-	return nil
+
+	return saveResource("base", tmpls, file, tmplContext, hub.Fs)
 }
 
 func (hub *Hub) renderTag(tag string, posts []pipeline.Post, isAllPosts bool) error {
 	// Make links from posts
 	links := []pipeline.Link{}
+
 	for _, p := range posts {
 		l := pipeline.Link{
 			Slug:  strings.TrimSuffix(path.Base(p.FilePath), ".md"),
@@ -72,17 +71,21 @@ func (hub *Hub) renderTag(tag string, posts []pipeline.Post, isAllPosts bool) er
 		}
 		links = append(links, l)
 	}
+
 	tmplContext := getInitialTmplContext(hub.Config)
 	tmplContext["TagName"] = tag
 	tmplContext["Links"] = links
 	path := filepath.Join(defaultDistDir, "all.html")
+
 	if !isAllPosts {
 		path = filepath.Join(defaultDistDir, "tags", fmt.Sprintf("%s.html", tag))
 	}
+
 	file, err := os.Create(path)
 	if err != nil {
 		return err
 	}
+
 	// render post template
 	tmpls := []string{
 		"templates/layouts/list.tmpl",
@@ -90,29 +93,29 @@ func (hub *Hub) renderTag(tag string, posts []pipeline.Post, isAllPosts bool) er
 		"templates/layouts/navbar.tmpl",
 		"templates/layouts/footer.tmpl",
 	}
-	err = saveResource("list", tmpls, file, tmplContext, hub.Fs)
-	if err != nil {
-		return err
-	}
-	return nil
+
+	return saveResource("list", tmpls, file, tmplContext, hub.Fs)
 }
 
 func (hub *Hub) renderGraphData(graphData GraphData) error {
 	path := filepath.Join(defaultDistDir, "data", "graph.json")
+
 	file, err := os.Create(path)
 	if err != nil {
 		return err
 	}
-	err = json.NewEncoder(file).Encode(&graphData)
-	if err != nil {
+
+	if err = json.NewEncoder(file).Encode(&graphData); err != nil {
 		return err
 	}
 
 	path = filepath.Join(defaultDistDir, "graph.html")
+
 	file, err = os.Create(path)
 	if err != nil {
 		return err
 	}
+
 	// render post template
 	tmpls := []string{
 		"templates/layouts/graph.tmpl",
@@ -122,9 +125,6 @@ func (hub *Hub) renderGraphData(graphData GraphData) error {
 	}
 
 	tmplContext := getInitialTmplContext(hub.Config)
-	err = saveResource("graph", tmpls, file, tmplContext, hub.Fs)
-	if err != nil {
-		return err
-	}
-	return nil
+
+	return saveResource("graph", tmpls, file, tmplContext, hub.Fs)
 }

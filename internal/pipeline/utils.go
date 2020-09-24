@@ -23,6 +23,7 @@ func findLinks(body string) []string {
 	for i, m := range matches {
 		matches[i] = strings.TrimSpace(m)
 	}
+
 	return matches
 }
 
@@ -34,12 +35,15 @@ func findLinks(body string) []string {
 // It uses styles from the chroma library in Go
 func SyntaxHighlighter(html []byte, syntaxStyle string) (string, error) {
 	byteReader := bytes.NewReader(html)
+
 	doc, err := goquery.NewDocumentFromReader(byteReader)
 	if err != nil {
 		log.Printf("Error parsing HTML: %s", err.Error())
 		return "", err
 	}
+
 	var hlErr error
+
 	doc.Find("code[class*=\"language-\"]").Each(func(i int, s *goquery.Selection) {
 		if hlErr != nil {
 			return
@@ -51,6 +55,7 @@ func SyntaxHighlighter(html []byte, syntaxStyle string) (string, error) {
 			lexer     = lexers.Get(lang)
 			formatter = synhtml.New(synhtml.WithClasses(false))
 		)
+
 		iterator, err := lexer.Tokenise(nil, string(oldCode))
 		if err != nil {
 			hlErr = err
@@ -72,6 +77,7 @@ func SyntaxHighlighter(html []byte, syntaxStyle string) (string, error) {
 
 		s.SetHtml(b.String())
 	})
+
 	if hlErr != nil {
 		return "", hlErr
 	}
