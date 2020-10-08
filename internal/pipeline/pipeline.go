@@ -138,7 +138,7 @@ func ConvertMarkdownToHTML(posts []Post, syntaxStyle string) error {
 			return err
 		}
 
-		posts[i].Body = string(html.Bytes())
+		posts[i].Body = html.String()
 	}
 
 	return nil

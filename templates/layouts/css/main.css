@@ -76,11 +76,11 @@ footer {
 pre {
 	border-radius: 4px;
 	overflow: auto;
-    padding: .5rem 1rem;
+	padding: .5rem 1rem;
 	margin:0 .2rem;
 	font-size:90%;
 	white-space: pre-wrap;
-	font-family:Consolas,Monaco,Menlo,monospace
+	font-family:Consolas,Monaco,Menlo,monospace;
 }
 img{
 	height: auto;
