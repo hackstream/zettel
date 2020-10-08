@@ -73,11 +73,16 @@ footer {
 .date {
 	color: #9b9b9b;
 }
-code {
-	font-size: initial;
-}
-code>pre{
-	padding: inherit;
+pre {
 	border-radius: 4px;
 	overflow: auto;
+    padding: .5rem 1rem;
+	margin:0 .2rem;
+	font-size:90%;
+	white-space: pre-wrap;
+	font-family:Consolas,Monaco,Menlo,monospace
+}
+img{
+	height: auto;
+	max-width: 100%;
 }
