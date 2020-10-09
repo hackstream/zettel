@@ -83,7 +83,7 @@ func (hub *Hub) build(cliCtx *cli.Context) error {
 		return err
 	}
 
-	if err = pipeline.ConvertMarkdownToHTML(posts, hub.Config.SitePrefix); err != nil {
+	if err = pipeline.ConvertMarkdownToHTML(posts, hub.Config.Pygmentsstyle); err != nil {
 		return err
 	}
 

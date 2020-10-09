@@ -13,6 +13,7 @@ import (
 	mathjax "github.com/athul/goldmark-mathjax"
 	"github.com/yourbasic/graph"
 	"github.com/yuin/goldmark"
+	highlighting "github.com/yuin/goldmark-highlighting"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/renderer/html"
 	"gopkg.in/yaml.v3"
@@ -47,8 +48,7 @@ func ReadFiles(directory string) ([]Post, error) {
 		// Extract metadata
 		splits := bytes.Split(data, []byte("---\n"))
 		frontMatter := splits[1]
-		err = yaml.Unmarshal(frontMatter, &post.Meta)
-		if err != nil {
+		if err = yaml.Unmarshal(frontMatter, &post.Meta); err != nil {
 			log.Printf("error while yaml unmarshal: %v", err)
 			return err
 		}
@@ -119,7 +119,13 @@ func ReplaceLinks(posts []Post, sitePrefix string) error {
 // ConvertMarkdownToHTML converts post's body into HTML
 func ConvertMarkdownToHTML(posts []Post, syntaxStyle string) error {
 	md := goldmark.New(
-		goldmark.WithExtensions(extension.GFM, mathjax.MathJax),
+		goldmark.WithExtensions(
+			extension.GFM,
+			mathjax.MathJax,
+			highlighting.NewHighlighting(
+				highlighting.WithStyle(syntaxStyle),
+			),
+		),
 		goldmark.WithRendererOptions(
 			html.WithUnsafe(),
 		),
@@ -132,12 +138,7 @@ func ConvertMarkdownToHTML(posts []Post, syntaxStyle string) error {
 			return err
 		}
 
-		body, err := SyntaxHighlighter(html.Bytes(), syntaxStyle)
-		if err != nil {
-			return err
-		}
-
-		posts[i].Body = body
+		posts[i].Body = html.String()
 	}
 
 	return nil
