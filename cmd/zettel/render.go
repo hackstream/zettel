@@ -128,3 +128,17 @@ func (hub *Hub) renderGraphData(graphData GraphData) error {
 
 	return saveResource("graph", tmpls, file, tmplContext, hub.Fs)
 }
+func (hub *Hub) renderSearchIndex(searchIndex []PostData) error {
+	path := filepath.Join(defaultDistDir, "data", "search.json")
+
+	file, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+
+	if err = json.NewEncoder(file).Encode(&searchIndex); err != nil {
+		return err
+	}
+
+	return nil
+}
