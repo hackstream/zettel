@@ -14,7 +14,8 @@ a,button {
 }
 
 navbar {
-	margin-top: 5rem;
+  margin-top: 5rem;
+  align-items: center;
 }
 
 .nav-item a {
@@ -85,4 +86,67 @@ pre {
 img{
 	height: auto;
 	max-width: 100%;
+}
+#fastSearch {
+  right: 0px;
+  top: 0px;
+  display: inline-block;
+  width: 100%;
+  position: relative;
+}
+
+#fastSearch input {
+  padding: 4px 10px;
+  width: 80%;
+  height: 31px;
+  font-size: inherit;
+  font-weight: bold;
+  border-radius: 3px 3px 0px 0px;
+  outline: thin;
+  text-align: left;
+}
+
+#searchResults li {
+  list-style: none;
+  margin-left: 0em;
+  background: black;
+}
+#searchResults li .title {
+  font-size: 1.1em;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+
+#searchResults {
+  position: absolute !important;
+  width: 400px;
+  padding: 0px;
+  margin: 0;
+}
+#searchResults a {
+  text-decoration: none !important;
+  padding: 10px;
+  display: inline-block;
+  color: white;
+}
+#searchResults a:hover,
+a:focus {
+  outline: 0;
+  color: #ec5148;
+}
+
+@media screen and (max-width: 900px) {
+  navbar {
+    flex-wrap: wrap;
+  }
+  .nav-item:last-child {
+    width: 100%;
+    text-align: center;
+  }
+  #fastSearch input {
+    width: 100%;
+  }
+  #searchResults {
+    padding: 0;
+  }
 }

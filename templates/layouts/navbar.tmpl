@@ -4,5 +4,12 @@
     <div class="nav-item"><a href="{{.SitePrefix}}/">Home</a></div>
     <div class="nav-item"><a href="{{.SitePrefix}}/all.html">All Zettels</a></div>
     <div class="nav-item"><a href="{{.SitePrefix}}/graph.html">Graph</a></div>
+    <div class="nav-item">
+        <div id="fastSearch">
+            <input id="searchInput" tabindex="0" autocomplete="off" placeholder="Search..." type="search">
+            <ul id="searchResults"></ul>
+        </div>
+    </div>
 </navbar>
+
 {{- end }}

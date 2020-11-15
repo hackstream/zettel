@@ -190,6 +190,11 @@ func (hub *Hub) build(cliCtx *cli.Context) error {
 
 	// Render graph.json
 	gd := MakeGraphData(posts, g)
+	// Render search.json
+	searchIndex := GenerateSearchIndex(posts)
+	if err = hub.renderSearchIndex(searchIndex); err != nil {
+		return err
+	}
 
 	return hub.renderGraphData(gd)
 }
