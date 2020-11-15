@@ -28,7 +28,11 @@ func GenerateSearchIndex(posts []pipeline.Post) []PostData {
 			Tags:      post.Meta.Tags,
 			Permalink: fmt.Sprintf("posts/%s.html", slug),
 		}
-		indexData = append(indexData, genPost)
+		if post.Meta.Title == "Index" {
+			continue // Skips adding the Index page to search index
+		} else {
+			indexData = append(indexData, genPost)
+		}
 	}
 	return indexData
 }
