@@ -15,7 +15,15 @@ func (hub *Hub) BuildSite() *cli.Command {
 		Name:    "build",
 		Aliases: []string{"b"},
 		Usage:   "Builds a static dist of all notes ready to be published on web.",
-		Action:  hub.MustHaveConfig(hub.build),
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:    "filesystem",
+				Aliases: []string{"f"},
+				Usage:   "Specify path to templates root filesystem",
+				Value:   "builtin",
+			},
+		},
+		Action: hub.MustInitFileSystem(hub.MustHaveConfig(hub.build)),
 	}
 }
 

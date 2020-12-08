@@ -9,7 +9,7 @@ import (
 type Hub struct {
 	Logger  *logrus.Logger
 	Config  Config
-	Fs      stuffbin.FileSystem
+	Fs      FileSystem
 	Version string
 }
 

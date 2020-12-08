@@ -3,9 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 
-	"github.com/knadh/stuffbin"
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 )
@@ -34,24 +32,6 @@ func initLogger(verbose bool) *logrus.Logger {
 	return logger
 }
 
-// initFileSystem initializes the stuffbin FileSystem to provide
-// access to bunded static assets to the app.
-func initFileSystem() (stuffbin.FileSystem, error) {
-	ex, err := os.Executable()
-	if err != nil {
-		panic(err)
-	}
-
-	exPath := filepath.Dir(ex)
-	fs, err := stuffbin.UnStuff(filepath.Join(exPath, filepath.Base(os.Args[0])))
-
-	if err != nil {
-		return nil, err
-	}
-
-	return fs, nil
-}
-
 func main() {
 	// Intialize new CLI app
 	app := cli.NewApp()
@@ -71,11 +51,11 @@ func main() {
 		},
 	}
 
-	var logger = initLogger(true)
+	logger := initLogger(true)
 
 	// Initialize the static file system into which all
 	// required static assets (.css, .js files etc.) are loaded.
-	fs, err := initFileSystem()
+	fs, err := initBuiltinFileSystem()
 	if err != nil {
 		logger.Errorf("error reading stuffed binary: %s", err)
 	}

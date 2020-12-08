@@ -5,8 +5,6 @@ import (
 	"io"
 	"os"
 	"text/template"
-
-	"github.com/knadh/stuffbin"
 )
 
 // createFile takes a default config template file and writes to the current directory
@@ -25,7 +23,7 @@ func createFile(cfgFile []byte, configName string) error {
 
 // parse takes in a template path and the variables to be "applied" on it. The rendered template
 // is saved to the destination path.
-func parse(name string, templateNames []string, fs stuffbin.FileSystem) (*template.Template, error) {
+func parse(name string, templateNames []string, fs FileSystem) (*template.Template, error) {
 	tmpl := template.New(name)
 
 	for _, t := range templateNames {
@@ -49,7 +47,7 @@ func writeTemplate(tmpl *template.Template, config map[string]interface{}, dest 
 	return tmpl.Execute(dest, config)
 }
 
-func saveResource(name string, templateNames []string, dest io.Writer, config map[string]interface{}, fs stuffbin.FileSystem) error {
+func saveResource(name string, templateNames []string, dest io.Writer, config map[string]interface{}, fs FileSystem) error {
 	// parse template file
 	tmpl, err := parse(name, templateNames, fs)
 	if err != nil {
