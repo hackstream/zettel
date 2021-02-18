@@ -1,11 +1,11 @@
 package main
 
 import (
+	"embed"
 	"fmt"
+	"log"
 	"os"
-	"path/filepath"
 
-	"github.com/knadh/stuffbin"
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 )
@@ -15,6 +15,9 @@ var (
 	buildVersion = "unknown"
 	buildDate    = "unknown"
 )
+
+//go:embed templates
+var fs embed.FS
 
 // initLogger initializes logger
 func initLogger(verbose bool) *logrus.Logger {
@@ -32,24 +35,6 @@ func initLogger(verbose bool) *logrus.Logger {
 	}
 
 	return logger
-}
-
-// initFileSystem initializes the stuffbin FileSystem to provide
-// access to bunded static assets to the app.
-func initFileSystem() (stuffbin.FileSystem, error) {
-	ex, err := os.Executable()
-	if err != nil {
-		panic(err)
-	}
-
-	exPath := filepath.Dir(ex)
-	fs, err := stuffbin.UnStuff(filepath.Join(exPath, filepath.Base(os.Args[0])))
-
-	if err != nil {
-		return nil, err
-	}
-
-	return fs, nil
 }
 
 func main() {
@@ -73,12 +58,10 @@ func main() {
 
 	var logger = initLogger(true)
 
-	// Initialize the static file system into which all
-	// required static assets (.css, .js files etc.) are loaded.
-	fs, err := initFileSystem()
-	if err != nil {
-		logger.Errorf("error reading stuffed binary: %s", err)
+	if _, err := fs.Open("templates/index.tmpl"); err != nil {
+		log.Fatalln(err)
 	}
+
 	// Initialize hub.
 	hub := NewHub(logger, fs, buildVersion)
 
@@ -92,7 +75,7 @@ func main() {
 	// Run the app.
 	hub.Logger.Info("Starting zettel...🚀")
 
-	if err = app.Run(os.Args); err != nil {
+	if err := app.Run(os.Args); err != nil {
 		logger.Errorf("OOPS: %s", err)
 	}
 }

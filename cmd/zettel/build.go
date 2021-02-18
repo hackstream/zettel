@@ -42,24 +42,24 @@ func (hub *Hub) makeDist() error {
 
 	// Copy css, images folders to dist directory
 	globs := map[string]string{
-		"/templates/layouts/css/*":    path.Join(defaultDistDir, "css"),
-		"/templates/layouts/images/*": path.Join(defaultDistDir, "images"),
-		"/templates/layouts/data/*":   path.Join(defaultDistDir, "data"),
+		"templates/layouts/css":    path.Join(defaultDistDir, "css"),
+		"templates/layouts/images": path.Join(defaultDistDir, "images"),
+		// "templates/layouts/data":   path.Join(defaultDistDir, "data"),
 	}
 
 	for g, dir := range globs {
-		files, err := hub.Fs.Glob(g)
+		files, err := hub.Fs.ReadDir(g)
 		if err != nil {
 			return err
 		}
 
 		for _, f := range files {
-			b, err := hub.Fs.Read(f)
+			b, err := hub.Fs.ReadFile(path.Join(g, f.Name()))
 			if err != nil {
 				return err
 			}
 
-			fd, err := os.Create(path.Join(dir, path.Base(f)))
+			fd, err := os.Create(path.Join(dir, f.Name()))
 			if err != nil {
 				return err
 			}

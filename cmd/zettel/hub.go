@@ -1,7 +1,8 @@
 package main
 
 import (
-	"github.com/knadh/stuffbin"
+	"embed"
+
 	"github.com/sirupsen/logrus"
 )
 
@@ -9,12 +10,12 @@ import (
 type Hub struct {
 	Logger  *logrus.Logger
 	Config  Config
-	Fs      stuffbin.FileSystem
+	Fs      embed.FS
 	Version string
 }
 
 // NewHub initializes an instance of Hub which holds app wide configuration.
-func NewHub(logger *logrus.Logger, fs stuffbin.FileSystem, buildVersion string) *Hub {
+func NewHub(logger *logrus.Logger, fs embed.FS, buildVersion string) *Hub {
 	hub := &Hub{
 		Logger:  logger,
 		Fs:      fs,
