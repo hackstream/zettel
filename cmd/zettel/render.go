@@ -16,23 +16,28 @@ func (hub *Hub) renderIndex(post pipeline.Post) error {
 	tmplContext["IsIndex"] = true
 	tmplContext["Post"] = post
 
-	path := filepath.Join(defaultDistDir, "index.html")
+	fpath := filepath.Join(defaultDistDir, "index.html")
 
-	file, err := os.Create(path)
+	file, err := os.Create(fpath)
 	if err != nil {
 		return err
 	}
 
 	// render post template
 	tmpls := []string{
-		"templates/layouts/base.tmpl",
-		"templates/layouts/header.tmpl",
-		"templates/layouts/navbar.tmpl",
-		"templates/layouts/post.tmpl",
-		"templates/layouts/footer.tmpl",
+		"layouts/base.tmpl",
+		"layouts/header.tmpl",
+		"layouts/navbar.tmpl",
+		"layouts/post.tmpl",
+		"layouts/footer.tmpl",
 	}
 
-	return saveResource("base", tmpls, file, tmplContext, hub.Fs)
+	// Add custom template path
+	for i := 0; i < len(tmpls); i++ {
+		tmpls[i] = path.Join(hub.Fs.TemplatePath, tmpls[i])
+	}
+
+	return saveResource("base", tmpls, file, tmplContext, hub.Fs.Fs)
 }
 
 func (hub *Hub) renderPost(post pipeline.Post) error {
@@ -41,23 +46,28 @@ func (hub *Hub) renderPost(post pipeline.Post) error {
 	tmplContext["Post"] = post
 
 	slug := strings.TrimSuffix(path.Base(post.FilePath), ".md")
-	path := filepath.Join(defaultDistDir, "posts", fmt.Sprintf("%s.html", slug))
+	fpath := filepath.Join(defaultDistDir, "posts", fmt.Sprintf("%s.html", slug))
 
-	file, err := os.Create(path)
+	file, err := os.Create(fpath)
 	if err != nil {
 		return err
 	}
 
 	// render post template
 	tmpls := []string{
-		"templates/layouts/base.tmpl",
-		"templates/layouts/header.tmpl",
-		"templates/layouts/navbar.tmpl",
-		"templates/layouts/post.tmpl",
-		"templates/layouts/footer.tmpl",
+		"layouts/base.tmpl",
+		"layouts/header.tmpl",
+		"layouts/navbar.tmpl",
+		"layouts/post.tmpl",
+		"layouts/footer.tmpl",
 	}
 
-	return saveResource("base", tmpls, file, tmplContext, hub.Fs)
+	// Add custom template path
+	for i := 0; i < len(tmpls); i++ {
+		tmpls[i] = path.Join(hub.Fs.TemplatePath, tmpls[i])
+	}
+
+	return saveResource("base", tmpls, file, tmplContext, hub.Fs.Fs)
 }
 
 func (hub *Hub) renderTag(tag string, posts []pipeline.Post, isAllPosts bool) error {
@@ -75,32 +85,37 @@ func (hub *Hub) renderTag(tag string, posts []pipeline.Post, isAllPosts bool) er
 	tmplContext := getInitialTmplContext(hub.Config)
 	tmplContext["TagName"] = tag
 	tmplContext["Links"] = links
-	path := filepath.Join(defaultDistDir, "all.html")
+	fpath := filepath.Join(defaultDistDir, "all.html")
 
 	if !isAllPosts {
-		path = filepath.Join(defaultDistDir, "tags", fmt.Sprintf("%s.html", tag))
+		fpath = filepath.Join(defaultDistDir, "tags", fmt.Sprintf("%s.html", tag))
 	}
 
-	file, err := os.Create(path)
+	file, err := os.Create(fpath)
 	if err != nil {
 		return err
 	}
 
 	// render post template
 	tmpls := []string{
-		"templates/layouts/list.tmpl",
-		"templates/layouts/header.tmpl",
-		"templates/layouts/navbar.tmpl",
-		"templates/layouts/footer.tmpl",
+		"layouts/list.tmpl",
+		"layouts/header.tmpl",
+		"layouts/navbar.tmpl",
+		"layouts/footer.tmpl",
 	}
 
-	return saveResource("list", tmpls, file, tmplContext, hub.Fs)
+	// Add custom template path
+	for i := 0; i < len(tmpls); i++ {
+		tmpls[i] = path.Join(hub.Fs.TemplatePath, tmpls[i])
+	}
+
+	return saveResource("list", tmpls, file, tmplContext, hub.Fs.Fs)
 }
 
 func (hub *Hub) renderGraphData(graphData GraphData) error {
-	path := filepath.Join(defaultDistDir, "data", "graph.json")
+	fpath := filepath.Join(defaultDistDir, "data", "graph.json")
 
-	file, err := os.Create(path)
+	file, err := os.Create(fpath)
 	if err != nil {
 		return err
 	}
@@ -109,22 +124,27 @@ func (hub *Hub) renderGraphData(graphData GraphData) error {
 		return err
 	}
 
-	path = filepath.Join(defaultDistDir, "graph.html")
+	fpath = filepath.Join(defaultDistDir, "graph.html")
 
-	file, err = os.Create(path)
+	file, err = os.Create(fpath)
 	if err != nil {
 		return err
 	}
 
 	// render post template
 	tmpls := []string{
-		"templates/layouts/graph.tmpl",
-		"templates/layouts/header.tmpl",
-		"templates/layouts/navbar.tmpl",
-		"templates/layouts/footer.tmpl",
+		"layouts/graph.tmpl",
+		"layouts/header.tmpl",
+		"layouts/navbar.tmpl",
+		"layouts/footer.tmpl",
+	}
+
+	// Add custom template path
+	for i := 0; i < len(tmpls); i++ {
+		tmpls[i] = path.Join(hub.Fs.TemplatePath, tmpls[i])
 	}
 
 	tmplContext := getInitialTmplContext(hub.Config)
 
-	return saveResource("graph", tmpls, file, tmplContext, hub.Fs)
+	return saveResource("graph", tmpls, file, tmplContext, hub.Fs.Fs)
 }

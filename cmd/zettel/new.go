@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
 	"time"
@@ -51,20 +52,20 @@ func (hub *Hub) newPost(cliCtx *cli.Context) error {
 		return err
 	}
 
-	path := filepath.Join(currentDir, defaultPostDir, sanitizedTitle)
+	p := filepath.Join(currentDir, defaultPostDir, sanitizedTitle)
 
-	post, err := os.Create(path)
+	post, err := os.Create(p)
 	if err != nil {
 		return err
 	}
 
 	// render post template
-	err = saveResource("index", []string{"templates/post.tmpl"}, post, cfg, hub.Fs)
+	err = saveResource("index", []string{path.Join(hub.Fs.TemplatePath, "post.tmpl")}, post, cfg, hub.Fs.Fs)
 	if err != nil {
 		return err
 	}
 
-	hub.Logger.Infof("New post created! %s", path)
+	hub.Logger.Infof("New post created! %s", p)
 
 	return nil
 }

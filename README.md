@@ -36,7 +36,6 @@ This is as meta as it gets. [Visit](https://zettel.hackstream.dev) `zettel`'s of
 These amazing FOSS projects helped us build `zettel`. If you liked `zettel`, consider spreading some love to these projects as well! :purple_heart:
 
 - [urfave/cli](https://github.com/urfave/cli)
-- [knadh/stuffbin](https://github.com/knadh/stuffbin)
 - [knadh/koanf](https://github.com/knadh/koanf)
 - [yourbasic/graph](https://github.com/yourbasic/graph)
 - [yuin/goldmark](https://github.com/yuin/goldmark)
