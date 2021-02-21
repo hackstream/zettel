@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path"
 	"path/filepath"
 
 	"github.com/pelletier/go-toml"
@@ -59,15 +60,15 @@ func (hub *Hub) init(cliCtx *cli.Context) error {
 	}
 
 	// persist Index file.
-	path := filepath.Join(siteDir, defaultPostDir, defaultindexFileName)
+	p := filepath.Join(siteDir, defaultPostDir, defaultindexFileName)
 
-	post, err := os.Create(path)
+	post, err := os.Create(p)
 	if err != nil {
 		return err
 	}
 
 	// render post template
-	if err = saveResource("index", []string{"templates/index.tmpl"}, post, nil, hub.Fs); err != nil {
+	if err = saveResource("index", []string{path.Join(hub.Fs.TemplatePath, "index.tmpl")}, post, nil, hub.Fs.Fs); err != nil {
 		return err
 	}
 

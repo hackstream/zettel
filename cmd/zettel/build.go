@@ -1,6 +1,9 @@
 package main
 
 import (
+	"io"
+	"io/fs"
+	"log"
 	"os"
 	"path"
 	"strings"
@@ -14,8 +17,15 @@ func (hub *Hub) BuildSite() *cli.Command {
 	return &cli.Command{
 		Name:    "build",
 		Aliases: []string{"b"},
-		Usage:   "Builds a static dist of all notes ready to be published on web.",
-		Action:  hub.MustHaveConfig(hub.build),
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:    "templates",
+				Aliases: []string{"t"},
+				Usage:   "Path to custom templates",
+			},
+		},
+		Usage:  "Builds a static dist of all notes ready to be published on web.",
+		Action: hub.MustHaveConfig(hub.build),
 	}
 }
 
@@ -42,19 +52,26 @@ func (hub *Hub) makeDist() error {
 
 	// Copy css, images folders to dist directory
 	globs := map[string]string{
-		"templates/layouts/css":    path.Join(defaultDistDir, "css"),
-		"templates/layouts/images": path.Join(defaultDistDir, "images"),
-		// "templates/layouts/data":   path.Join(defaultDistDir, "data"),
+		"layouts/css":    path.Join(defaultDistDir, "css"),
+		"layouts/images": path.Join(defaultDistDir, "images"),
 	}
 
 	for g, dir := range globs {
-		files, err := hub.Fs.ReadDir(g)
+		p := path.Join(hub.Fs.TemplatePath, g)
+		files, err := fs.ReadDir(hub.Fs.Fs, p)
 		if err != nil {
+			log.Printf("p: %v", p)
 			return err
 		}
 
 		for _, f := range files {
-			b, err := hub.Fs.ReadFile(path.Join(g, f.Name()))
+			b, err := hub.Fs.Fs.Open(path.Join(p, f.Name()))
+			if err != nil {
+				return err
+			}
+			defer b.Close()
+
+			data, err := io.ReadAll(b)
 			if err != nil {
 				return err
 			}
@@ -63,8 +80,9 @@ func (hub *Hub) makeDist() error {
 			if err != nil {
 				return err
 			}
+			defer fd.Close()
 
-			if _, err = fd.Write(b); err != nil {
+			if _, err = fd.Write(data); err != nil {
 				return err
 			}
 		}
@@ -74,6 +92,16 @@ func (hub *Hub) makeDist() error {
 }
 
 func (hub *Hub) build(cliCtx *cli.Context) error {
+	// If there is a custom template directory, change fs in hub
+	customTemplatesPath := cliCtx.Value("templates").(string)
+	if customTemplatesPath != "" {
+		fs := os.DirFS(customTemplatesPath)
+		hub.Fs = Fs{
+			Fs:           fs,
+			TemplatePath: "",
+		}
+	}
+
 	posts, err := pipeline.ReadFiles(defaultPostDir)
 	if err != nil {
 		return err

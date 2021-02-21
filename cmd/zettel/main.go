@@ -17,7 +17,7 @@ var (
 )
 
 //go:embed templates
-var fs embed.FS
+var embedFs embed.FS
 
 // initLogger initializes logger
 func initLogger(verbose bool) *logrus.Logger {
@@ -58,12 +58,12 @@ func main() {
 
 	var logger = initLogger(true)
 
-	if _, err := fs.Open("templates/index.tmpl"); err != nil {
+	if _, err := embedFs.Open("templates/index.tmpl"); err != nil {
 		log.Fatalln(err)
 	}
 
 	// Initialize hub.
-	hub := NewHub(logger, fs, buildVersion)
+	hub := NewHub(logger, embedFs, "templates", buildVersion)
 
 	// Register commands.
 	app.Commands = []*cli.Command{
