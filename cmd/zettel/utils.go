@@ -5,11 +5,12 @@ import (
 	"io"
 	"io/fs"
 	"os"
+	"path"
 	"text/template"
 )
 
-// createFile takes a default config template file and writes to the current directory
-func createFile(cfgFile []byte, configName string) error {
+// createDefaultConfigFile takes a default config template file and writes to the current directory
+func createDefaultConfigFile(cfgFile []byte, configName string) error {
 	f, err := os.Create(configName)
 	if err != nil {
 		return fmt.Errorf("error while creating default config: %v", err)
@@ -77,6 +78,17 @@ func getInitialTmplContext(cfg Config) map[string]interface{} {
 	tmplContext["SiteName"] = cfg.SiteName
 	tmplContext["Description"] = cfg.Description
 	tmplContext["SitePrefix"] = cfg.SitePrefix
+	tmplContext["StripHTML"] = cfg.StripHTML
 
 	return tmplContext
+}
+
+func createFile(filename string) (*os.File, error) {
+	// Check if the base directory exists.
+	dir := path.Dir(filename)
+	if err := createDirectory(dir); err != nil {
+		return nil, err
+	}
+
+	return os.Create(filename)
 }

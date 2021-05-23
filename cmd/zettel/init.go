@@ -45,7 +45,7 @@ func (hub *Hub) init(cliCtx *cli.Context) error {
 	}
 
 	// persist the default config file.
-	if err = createFile(configFile, filepath.Join(siteDir, defaultconfigName)); err != nil {
+	if err = createDefaultConfigFile(configFile, filepath.Join(siteDir, defaultconfigName)); err != nil {
 		return fmt.Errorf("error creating default config: %v", err)
 	}
 

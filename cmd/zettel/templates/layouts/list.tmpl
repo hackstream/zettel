@@ -15,7 +15,11 @@
                 {{- if eq .Slug "index"}}
                     <li><a href="{{$.SitePrefix}}">{{.Title}}</a></li>
                 {{- else}}
-                    <li><a href="{{$.SitePrefix}}/posts/{{.Slug}}.html">{{.Title}}</a></li>
+                    {{if $.StripHTML}}
+                        <li><a href="{{$.SitePrefix}}/posts/{{.Slug}}/">{{.Title}}</a></li>
+                    {{- else}}
+                        <li><a href="{{$.SitePrefix}}/posts/{{.Slug}}.html">{{.Title}}</a></li>
+                    {{- end}}
                 {{- end}} 
             {{- end}}
             </ul>

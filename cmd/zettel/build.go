@@ -107,7 +107,7 @@ func (hub *Hub) build(cliCtx *cli.Context) error {
 		return err
 	}
 
-	if err = pipeline.ReplaceLinks(posts, hub.Config.SitePrefix); err != nil {
+	if err = pipeline.ReplaceLinks(posts, hub.Config.SitePrefix, hub.Config.StripHTML); err != nil {
 		return err
 	}
 
