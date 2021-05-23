@@ -75,7 +75,7 @@ func ReadFiles(directory string) ([]Post, error) {
 }
 
 // ReplaceLinks replaces all the `[[]]` links in the body with the link to the HTML page.
-func ReplaceLinks(posts []Post, sitePrefix string) error {
+func ReplaceLinks(posts []Post, sitePrefix string, stripHTML bool) error {
 	// First we need a map of all the files, so that we know
 	// if there's a link to any non existent file and also
 	// to get the metadata of the file
@@ -101,7 +101,12 @@ func ReplaceLinks(posts []Post, sitePrefix string) error {
 				return fmt.Errorf("link to an invalid slug: %s", sg)
 			}
 
-			link := fmt.Sprintf(`[%s](%s/posts/%s.html)`, meta.Title, sitePrefix, sg)
+			var link string
+			if stripHTML {
+				link = fmt.Sprintf(`[%s](%s/posts/%s/)`, meta.Title, sitePrefix, sg)
+			} else {
+				link = fmt.Sprintf(`[%s](%s/posts/%s.html)`, meta.Title, sitePrefix, sg)
+			}
 
 			// Replace the slug with a link
 			posts[i].Body = strings.ReplaceAll(posts[i].Body, m, link)

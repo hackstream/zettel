@@ -15,7 +15,12 @@
       </div>
    </body>
    <script>
-   sigma.parsers.json('data/graph.json', {
+   {{ if .StripHTML}}
+      var link = '../data/graph.json';
+   {{- else}}
+      var link = 'data/graph.json';
+   {{- end}}
+   sigma.parsers.json(link, {
       renderer: {
          container: document.getElementById('graphContainer'),
          type: 'canvas'

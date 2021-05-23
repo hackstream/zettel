@@ -2,7 +2,12 @@
 
 <navbar class="horizontal-align">
     <div class="nav-item"><a href="{{.SitePrefix}}/">Home</a></div>
-    <div class="nav-item"><a href="{{.SitePrefix}}/all.html">All Zettels</a></div>
-    <div class="nav-item"><a href="{{.SitePrefix}}/graph.html">Graph</a></div>
+    {{if $.StripHTML}}
+        <div class="nav-item"><a href="{{.SitePrefix}}/all/">All Zettels</a></div>
+        <div class="nav-item"><a href="{{.SitePrefix}}/graph/">Graph</a></div>
+    {{- else}}
+        <div class="nav-item"><a href="{{.SitePrefix}}/all.html">All Zettels</a></div>
+        <div class="nav-item"><a href="{{.SitePrefix}}/graph.html">Graph</a></div>
+    {{- end}}
 </navbar>
 {{- end }}

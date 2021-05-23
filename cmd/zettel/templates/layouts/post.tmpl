@@ -18,7 +18,11 @@
                     {{- if eq .Slug "index"}}
                         <li><a href="{{$.SitePrefix}}/">{{.Title}}</a></li>
                     {{- else}}
-                        <li><a href="{{$.SitePrefix}}/posts/{{.Slug}}.html">{{.Title}}</a></li>
+                        {{if $.StripHTML}}
+                            <li><a href="{{$.SitePrefix}}/posts/{{.Slug}}/">{{.Title}}</a></li>
+                        {{- else}}
+                            <li><a href="{{$.SitePrefix}}/posts/{{.Slug}}.html">{{.Title}}</a></li>
+                        {{- end}}
                     {{- end}}    
                 {{- end}}
             </ul>
@@ -28,7 +32,12 @@
 {{- if .Post.Meta.Tags}}
     <section class="container tags">
         {{- range $t := .Post.Meta.Tags}}
-            <a href="{{$.SitePrefix}}/tags/{{$t}}.html"><button class='outline'>{{$t}}</button></a>
+            {{- if $.StripHTML}}
+                <a href="{{$.SitePrefix}}/tags/{{$t}}"><button class='outline'>{{$t}}</button></a>
+            {{- else}}
+                <a href="{{$.SitePrefix}}/tags/{{$t}}.html"><button class='outline'>{{$t}}</button></a>
+            {{- end}}
+            
         {{- end}}
     </section>
 {{- end}}

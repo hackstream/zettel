@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"io/fs"
 	"log"
@@ -92,6 +93,7 @@ func (hub *Hub) makeDist() error {
 }
 
 func (hub *Hub) build(cliCtx *cli.Context) error {
+	fmt.Printf("config: %v\n", hub.Config)
 	// If there is a custom template directory, change fs in hub
 	customTemplatesPath := cliCtx.Value("templates").(string)
 	if customTemplatesPath != "" {
@@ -107,7 +109,7 @@ func (hub *Hub) build(cliCtx *cli.Context) error {
 		return err
 	}
 
-	if err = pipeline.ReplaceLinks(posts, hub.Config.SitePrefix); err != nil {
+	if err = pipeline.ReplaceLinks(posts, hub.Config.SitePrefix, hub.Config.StripHTML); err != nil {
 		return err
 	}
 

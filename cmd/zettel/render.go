@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"os"
 	"path"
 	"path/filepath"
 	"strings"
@@ -18,7 +17,7 @@ func (hub *Hub) renderIndex(post pipeline.Post) error {
 
 	fpath := filepath.Join(defaultDistDir, "index.html")
 
-	file, err := os.Create(fpath)
+	file, err := createFile(fpath)
 	if err != nil {
 		return err
 	}
@@ -41,14 +40,20 @@ func (hub *Hub) renderIndex(post pipeline.Post) error {
 }
 
 func (hub *Hub) renderPost(post pipeline.Post) error {
+	fmt.Printf("Strip html: %v\n", hub.Config.StripHTML)
 	tmplContext := getInitialTmplContext(hub.Config)
 	tmplContext["IsIndex"] = false
 	tmplContext["Post"] = post
 
 	slug := strings.TrimSuffix(path.Base(post.FilePath), ".md")
-	fpath := filepath.Join(defaultDistDir, "posts", fmt.Sprintf("%s.html", slug))
+	var fpath string
+	if !hub.Config.StripHTML {
+		fpath = filepath.Join(defaultDistDir, "posts", fmt.Sprintf("%s.html", slug))
+	} else {
+		fpath = filepath.Join(defaultDistDir, "posts", fmt.Sprintf("%s/index.html", slug))
+	}
 
-	file, err := os.Create(fpath)
+	file, err := createFile(fpath)
 	if err != nil {
 		return err
 	}
@@ -85,13 +90,22 @@ func (hub *Hub) renderTag(tag string, posts []pipeline.Post, isAllPosts bool) er
 	tmplContext := getInitialTmplContext(hub.Config)
 	tmplContext["TagName"] = tag
 	tmplContext["Links"] = links
-	fpath := filepath.Join(defaultDistDir, "all.html")
-
-	if !isAllPosts {
-		fpath = filepath.Join(defaultDistDir, "tags", fmt.Sprintf("%s.html", tag))
+	var fpath string
+	if hub.Config.StripHTML {
+		fpath = filepath.Join(defaultDistDir, "all/index.html")
+	} else {
+		fpath = filepath.Join(defaultDistDir, "all.html")
 	}
 
-	file, err := os.Create(fpath)
+	if !isAllPosts {
+		if hub.Config.StripHTML {
+			fpath = filepath.Join(defaultDistDir, "tags", fmt.Sprintf("%s/index.html", tag))
+		} else {
+			fpath = filepath.Join(defaultDistDir, "tags", fmt.Sprintf("%s.html", tag))
+		}
+	}
+
+	file, err := createFile(fpath)
 	if err != nil {
 		return err
 	}
@@ -113,9 +127,9 @@ func (hub *Hub) renderTag(tag string, posts []pipeline.Post, isAllPosts bool) er
 }
 
 func (hub *Hub) renderGraphData(graphData GraphData) error {
-	fpath := filepath.Join(defaultDistDir, "data", "graph.json")
+	gfpath := filepath.Join(defaultDistDir, "data", "graph.json")
 
-	file, err := os.Create(fpath)
+	file, err := createFile(gfpath)
 	if err != nil {
 		return err
 	}
@@ -124,9 +138,14 @@ func (hub *Hub) renderGraphData(graphData GraphData) error {
 		return err
 	}
 
-	fpath = filepath.Join(defaultDistDir, "graph.html")
+	var fpath string
+	if hub.Config.StripHTML {
+		fpath = filepath.Join(defaultDistDir, "graph/index.html")
+	} else {
+		fpath = filepath.Join(defaultDistDir, "graph.html")
+	}
 
-	file, err = os.Create(fpath)
+	file, err = createFile(fpath)
 	if err != nil {
 		return err
 	}
