@@ -40,7 +40,6 @@ func (hub *Hub) renderIndex(post pipeline.Post) error {
 }
 
 func (hub *Hub) renderPost(post pipeline.Post) error {
-	fmt.Printf("Strip html: %v\n", hub.Config.StripHTML)
 	tmplContext := getInitialTmplContext(hub.Config)
 	tmplContext["IsIndex"] = false
 	tmplContext["Post"] = post

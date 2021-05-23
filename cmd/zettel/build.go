@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io"
 	"io/fs"
 	"log"
@@ -93,7 +92,6 @@ func (hub *Hub) makeDist() error {
 }
 
 func (hub *Hub) build(cliCtx *cli.Context) error {
-	fmt.Printf("config: %v\n", hub.Config)
 	// If there is a custom template directory, change fs in hub
 	customTemplatesPath := cliCtx.Value("templates").(string)
 	if customTemplatesPath != "" {
